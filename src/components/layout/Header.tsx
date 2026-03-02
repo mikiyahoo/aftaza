@@ -11,6 +11,7 @@ import { HamburgerMenuButton } from "@/components/ui/Button";
 
 
 type NavItem = (typeof NAV_LINKS)[number];
+const easing: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 function DropdownMenu({ item, close }: { item: NavItem; close: () => void }) {
   const pathname = usePathname();
@@ -38,7 +39,7 @@ function DropdownMenu({ item, close }: { item: NavItem; close: () => void }) {
       initial={{ opacity: 0, y: 15, filter: "blur(10px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       exit={{ opacity: 0, y: 10, filter: "blur(10px)" }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, ease: easing }}
       className="absolute top-full left-0 mt-4 w-80 bg-[#09111f]/95 backdrop-blur-2xl border border-white/10 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-50"
     >
       <div className="relative z-10 grid gap-1">

@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { MoveRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { SectionTitle } from "@/components/ui/Section";
 
 const MotionCard = motion(Card);
 const MotionSectionTitle = motion(SectionTitle);
+const easing: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 // Type definition for segments
 interface ServiceSegment {
@@ -74,14 +76,14 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.16, 1, 0.3, 1],
+      ease: easing,
     },
   },
 };
@@ -96,14 +98,14 @@ const headerVariants = {
   },
 };
 
-const headerItemVariants = {
+const headerItemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
+      ease: easing,
     },
   },
 };
@@ -162,7 +164,7 @@ export default function WhoWeServe() {
               variants={itemVariants}
               className="card group relative bg-white border border-[#E2E8F0] hover:border-[#c8a34d] transition-all duration-500 p-8"
               whileHover={{ y: -4 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.3, ease: easing }}
             >
               {/* Number watermark - preserved original styling */}
               <span className="number-watermark absolute top-6 right-8 font-display text-6xl font-semibold text-[rgba(200,163,77,0.08)] select-none" aria-hidden="true">

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { 
   BarChart3, PlayCircle, Fingerprint, LineChart, 
   ShieldCheck, FileSearch, Megaphone, Target,
-  ArrowRight, Layers, hardDrive, MonitorPlay,
+  ArrowRight, Layers, HardDrive, MonitorPlay,
   CheckCircle2, Globe, Sparkles
 } from "lucide-react";
 import Link from "next/link";

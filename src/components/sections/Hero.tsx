@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, animate } from "framer-motion";
+import type { Variants } from "framer-motion";
 import Badge from "@/components/ui/Badge";
 import { SliderNavButton } from "@/components/ui/Button";
 
@@ -53,6 +54,7 @@ export default function Hero() {
   
   const animationRef = useRef<ReturnType<typeof animate> | null>(null);
   const slideDuration = 6000; // 6 seconds
+  const easing: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
   useEffect(() => {
     if (!isPaused) {
@@ -90,9 +92,9 @@ export default function Hero() {
     setCurrentSlide(index);
   };
 
-  const textVariants = {
+  const textVariants: Variants = {
     initial: { opacity: 0, y: 30, filter: "blur(10px)" },
-    animate: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: easing } },
     exit: { opacity: 0, y: -20, filter: "blur(10px)", transition: { duration: 0.4 } },
   };
 
@@ -182,7 +184,7 @@ export default function Hero() {
                     initial={{ y: 40 }}
                     animate={{ y: 0 }}
                     exit={{ y: -40 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.6, ease: easing }}
                     className="text-4xl md:text-5xl font-bold text-[#c8a34d] font-display"
                   >
                     {String(currentSlide + 1).padStart(2, '0')}

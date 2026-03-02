@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
 import Button, { DropdownMenuButton } from "@/components/ui/Button";
 import { usePathname, useRouter } from "next/navigation";
 import { SITE, NAV_LINKS } from "@/lib/constants";
@@ -36,9 +37,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     }
   };
 
-  const containerVariants = {
-    closed: { x: "100%", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
-    open: { x: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  const easing: [number, number, number, number] = [0.76, 0, 0.24, 1];
+
+  const containerVariants: Variants = {
+    closed: { x: "100%", transition: { duration: 0.4, ease: easing } },
+    open: { x: 0, transition: { duration: 0.4, ease: easing } }
   };
 
   const linkVariants = {
