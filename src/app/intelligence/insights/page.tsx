@@ -4,7 +4,7 @@ import { insights } from "@/data/protocols";
 
 export default async function IntelligenceHub() {
   return (
-    <main className="bg-white pt-32 pb-20">
+    <main data-header-text="light" className="bg-white pt-32 pb-20">
       <div className="container-x">
         <header className="border-b border-slate-900 pb-12 mb-16">
           <SectionTitle as="h1" size="hero" className="!text-6xl uppercase tracking-tighter">

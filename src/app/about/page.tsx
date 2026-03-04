@@ -65,7 +65,7 @@ const PhaseCard = ({ step, title, desc }: { step: string; title: string; desc: s
 
 export default function AboutPage() {
   return (
-    <main className="bg-[#09111f] text-white">
+    <main className="bg-brand-dark text-white">
       
       {/* --- HERO SECTION --- */}
       <section 
@@ -77,7 +77,7 @@ export default function AboutPage() {
           backgroundAttachment: 'fixed'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#09111f] via-[#09111f]/80 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/80 to-transparent z-10" />
         
         <div className="container-x relative z-20 pt-20">
           <div className="max-w-[850px]">
@@ -107,7 +107,7 @@ export default function AboutPage() {
       </section>
 
       {/* --- THE INSTITUTION (WHITE SECTION) --- */}
-      <section className="bg-white py-24 md:py-32">
+      <section data-header-text="light" className="bg-white py-24 md:py-32">
         <div className="container-x">
           <div className="grid lg:grid-cols-2 gap-20 items-start">
             <div>
@@ -185,7 +185,7 @@ export default function AboutPage() {
       </section>
 
       {/* --- WORKFLOW (WHITE SECTION) --- */}
-      <section className="bg-white py-24 md:py-32">
+      <section data-header-text="light" className="bg-white py-24 md:py-32">
         <div className="container-x">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
             <div className="max-w-xl">

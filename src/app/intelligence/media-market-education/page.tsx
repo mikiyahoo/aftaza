@@ -36,10 +36,10 @@ const mediaSystems = [
 
 export default function MediaMarketingPage() {
   return (
-    <main className="snap-container bg-white text-slate-900">
+    <main data-header-text="light" className="snap-container bg-white text-slate-900">
       
       {/* HERO SECTION - THE COMMAND CENTER */}
-      <section className="snap-section bg-slate-50 relative flex items-center overflow-hidden">
+      <section data-header-text="light" className="snap-section bg-slate-50 relative flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#c8a34d_1px,transparent_1px),linear-gradient(to_bottom,#c8a34d_1px,transparent_1px)] bg-[size:40px_40px]" />
         </div>
@@ -63,7 +63,7 @@ export default function MediaMarketingPage() {
       </section>
 
       {/* SECTION 1: POSITIONING & PHILOSOPHY */}
-      <section className="snap-section bg-white flex items-center">
+      <section data-header-text="light" className="snap-section bg-white flex items-center">
         <div className="container-x w-full">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
@@ -138,7 +138,7 @@ export default function MediaMarketingPage() {
       </section>
 
       {/* SECTION 3: PERFORMANCE GOVERNANCE (The Table Section) */}
-      <section className="snap-section bg-white flex items-center">
+      <section data-header-text="light" className="snap-section bg-white flex items-center">
         <div className="container-x w-full">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <SectionTitle className="uppercase tracking-tighter mb-6">
@@ -176,7 +176,7 @@ export default function MediaMarketingPage() {
       </section>
 
       {/* SECTION 4: FINAL CTA OVERLAY */}
-      <section className="snap-section bg-white relative flex items-center justify-center overflow-hidden">
+      <section data-header-text="light" className="snap-section bg-white relative flex items-center justify-center overflow-hidden">
         {/* Background Ghost Text */}
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none select-none">
           <span className="text-[30vw] font-black uppercase leading-none">AFTAZA</span>

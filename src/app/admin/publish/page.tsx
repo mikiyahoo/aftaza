@@ -37,13 +37,13 @@ export default function AdminPublishPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 pt-20 pb-20">
+    <main data-header-text="light" className="min-h-screen bg-slate-50 text-slate-900 pt-20 pb-20">
       <div className="container-x">
         {/* HEADER SECTION */}
         <div className="flex justify-between items-end mb-12">
           <div>
             <span className="text-[#c8a34d] font-mono text-[10px] font-bold uppercase tracking-[0.4em]">AFTAZA_Internal</span>
-            <h1 className="text-4xl font-display font-black uppercase tracking-tighter text-[#09111f]">Protocol Publisher</h1>
+            <h1 className="text-4xl font-display font-black uppercase tracking-tighter text-brand-dark">Protocol Publisher</h1>
           </div>
           
           <Button 
@@ -61,7 +61,7 @@ export default function AdminPublishPage() {
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* LEFT: THE STRUCTURED FORM */}
-          <section className="bg-white p-10 border border-slate-200 space-y-8 shadow-sm">
+          <section data-header-text="light" className="bg-white p-10 border border-slate-200 space-y-8 shadow-sm">
             <div>
               <label className="text-[10px] font-bold uppercase text-slate-400 block mb-2 tracking-widest">Protocol Title</label>
                 <input 
@@ -144,28 +144,28 @@ export default function AdminPublishPage() {
                  )}
               </div>
               
-              <div className="bg-white border border-slate-200 p-12 shadow-2xl relative overflow-hidden">
+              <div data-header-text="light" className="bg-white border border-slate-200 p-12 shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-slate-50 -mr-12 -mt-12 rotate-45 border-b border-slate-100" />
                 
                 <span className="text-[#c8a34d] font-mono text-[9px] font-bold uppercase tracking-[0.3em] mb-4 block">
                   {formData.silo.replace('-', ' ')}
                 </span>
                 
-                <h2 className="text-3xl font-display font-black uppercase mb-10 leading-none tracking-tighter text-[#09111f]">
+                <h2 className="text-3xl font-display font-black uppercase mb-10 leading-none tracking-tighter text-brand-dark">
                   {formData.title || "Untitled Protocol"}
                 </h2>
                 
                 <div className="space-y-8 border-l border-slate-100 pl-8">
                   <div>
-                    <h4 className="text-[9px] font-black uppercase text-[#09111f] mb-2 tracking-widest">Problem Statement</h4>
+                    <h4 className="text-[9px] font-black uppercase text-brand-dark mb-2 tracking-widest">Problem Statement</h4>
                     <p className="text-slate-500 text-xs leading-relaxed italic">{formData.problem || "Awaiting systemic input..."}</p>
                   </div>
                   <div>
-                    <h4 className="text-[9px] font-black uppercase text-[#09111f] mb-2 tracking-widest">Systemic Analysis</h4>
+                    <h4 className="text-[9px] font-black uppercase text-brand-dark mb-2 tracking-widest">Systemic Analysis</h4>
                     <p className="text-slate-500 text-xs leading-relaxed">{formData.cause || "Analysis pending..."}</p>
                   </div>
                   <div>
-                    <h4 className="text-[9px] font-black uppercase text-[#09111f] mb-2 tracking-widest">Proposed Framework</h4>
+                    <h4 className="text-[9px] font-black uppercase text-brand-dark mb-2 tracking-widest">Proposed Framework</h4>
                     <p className="text-slate-900 text-xs leading-relaxed font-medium">{formData.solution || "Structural design phase..."}</p>
                   </div>
                 </div>

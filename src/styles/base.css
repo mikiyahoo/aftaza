@@ -9,8 +9,8 @@
   --gold:         #c8a34d;
   --gold-light:   #dfc278;
   --gold-dim:     rgba(200,163,77,0.12);
-  --dark:         #09111f;
-  --navy:         #0f172a;
+  --dark:         #09111f; /* brand-dark */
+  --navy:         #0f172a; /* brand-navy */
   --surface:      #111827;
   --card:         #141e2f;
   --border:       rgba(200,163,77,0.15);

@@ -40,7 +40,7 @@ const principles = [
 
 export default function DifferentiatorSection() {
   return (
-    <section className="relative py-24 bg-[#09111f] overflow-hidden">
+    <section className="relative py-24 bg-brand-dark overflow-hidden">
       {/* Background Grid Accent */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(200,163,77,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(200,163,77,0.01)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
 
@@ -76,7 +76,7 @@ export default function DifferentiatorSection() {
                   {d.nodeId}
                 </div>
 
-                <div className="flex-shrink-0 w-11 h-11 rounded-full border border-[#c8a34d]/20 flex items-center justify-center text-[#c8a34d] bg-[#09111f] group-hover:bg-[#c8a34d] group-hover:text-[#09111f] transition-all duration-500 shadow-lg">
+                <div className="flex-shrink-0 w-11 h-11 rounded-full border border-brand-gold/20 flex items-center justify-center text-brand-gold bg-brand-navy group-hover:bg-brand-gold group-hover:text-brand-navy transition-all duration-500 shadow-lg">
                   <d.icon size={20} strokeWidth={1.5} />
                 </div>
 
@@ -120,7 +120,7 @@ export default function DifferentiatorSection() {
                 {principles.map((p) => (
                   <div 
                     key={p} 
-                    className="flex items-center gap-3 p-4 bg-[#09111f]/60 border border-white/5 group-hover:border-[#c8a34d]/20 transition-all duration-300 h-full min-h-[60px]"
+                    className="flex items-center gap-3 p-4 bg-brand-dark/60 border border-white/5 group-hover:border-[#c8a34d]/20 transition-all duration-300 h-full min-h-[60px]"
                   >
                     <div className="w-1 h-4 bg-[#c8a34d]/20 group-hover:bg-[#c8a34d] transition-colors" />
                     <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">

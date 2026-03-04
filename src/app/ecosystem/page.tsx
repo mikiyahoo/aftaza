@@ -1,18 +1,30 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  Building2, UserCheck, Briefcase, Landmark, Users, Layers, ArrowRight 
+import {
+  Building2, UserCheck, Briefcase, Landmark, Users, Layers, ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import { SectionTitle } from "@/components/ui/Section";
 
 export default function EcosystemPage() {
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash) {
+      // Small delay to allow page to render before scrolling
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+    }
+  }, []);
+
   return (
-    <main className="snap-container bg-white text-slate-900 overflow-x-hidden">
+    <main data-header-text="light" className="snap-container bg-white text-slate-900 overflow-x-hidden">
 
       {/* HERO SECTION */}
-      <section className="snap-section bg-[#F8F9FB] relative flex items-center">
+      <section data-header-text="light" className="snap-section bg-[#F8F9FB] relative flex items-center">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
           <div className="absolute inset-0 bg-[radial-gradient(#c8a34d_1px,transparent_1px)] bg-[size:30px_30px]" />
         </div>
@@ -25,7 +37,7 @@ export default function EcosystemPage() {
             <p className="text-xl md:text-2xl text-slate-500 max-w-3xl font-light leading-relaxed mb-12">
               An integrated real estate ecosystem aligning developers, buyers, investors, governance, and demand into one controlled transaction framework.
             </p>
-            <a href="#developer" className="btn-primary px-12 py-5 text-sm uppercase tracking-widest font-bold shadow-2xl shadow-[#c8a34d]/20">
+            <a href="#developers" className="btn-primary px-12 py-5 text-sm uppercase tracking-widest font-bold shadow-2xl shadow-[#c8a34d]/20">
               View Architecture
             </a>
           </div>
@@ -33,7 +45,7 @@ export default function EcosystemPage() {
       </section>
 
       {/* SECTION 1 — Developer Layer */}
-      <section id="developer" className="snap-section bg-white flex items-center py-20">
+      <section id="developers" data-header-text="light" className="snap-section bg-white flex items-center py-20">
         <div className="container-x w-full">
           <SectionTitle className="uppercase tracking-tighter mb-6">
             Developer Commercial Infrastructure
@@ -58,7 +70,7 @@ export default function EcosystemPage() {
       </section>
 
       {/* SECTION 2 — Buyer Layer */}
-      <section id="buyer" className="snap-section bg-[#F8F9FB] flex items-center py-20">
+      <section id="buyers" data-header-text="light" className="snap-section bg-[#F8F9FB] flex items-center py-20">
         <div className="container-x w-full">
           <SectionTitle className="uppercase tracking-tighter mb-6">
             Buyer Protection Framework
@@ -83,7 +95,7 @@ export default function EcosystemPage() {
       </section>
 
       {/* SECTION 3 — Investor Layer */}
-      <section id="investor" className="snap-section bg-white flex items-center py-20">
+      <section id="investors" data-header-text="light" className="snap-section bg-white flex items-center py-20">
         <div className="container-x w-full">
           <SectionTitle className="uppercase tracking-tighter mb-6">
             Capital Structuring Architecture
@@ -107,8 +119,8 @@ export default function EcosystemPage() {
         </div>
       </section>
 
-      {/* SECTION 4 — Governance Layer */}
-      <section id="governance" className="snap-section bg-[#F8F9FB] flex items-center py-20">
+      {/* SECTION 4 — Financiers Layer */}
+      <section id="financiers" data-header-text="light" className="snap-section bg-[#F8F9FB] flex items-center py-20">
         <div className="container-x w-full">
           <SectionTitle className="uppercase tracking-tighter mb-6">
             Transaction Governance
@@ -132,8 +144,8 @@ export default function EcosystemPage() {
         </div>
       </section>
 
-      {/* SECTION 5 — Media & Demand Layer */}
-      <section id="media" className="snap-section bg-white flex items-center py-20">
+      {/* SECTION 5 — Institutional Partners Layer */}
+      <section id="partners" data-header-text="light" className="snap-section bg-white flex items-center py-20">
         <div className="container-x w-full">
           <SectionTitle className="uppercase tracking-tighter mb-6">
             Market Education & Demand Structuring
@@ -158,7 +170,7 @@ export default function EcosystemPage() {
       </section>
 
       {/* FINAL CTA SECTION */}
-      <section className="snap-section bg-[#F8F9FB] flex items-center justify-center py-20">
+      <section data-header-text="light" className="snap-section bg-[#F8F9FB] flex items-center justify-center py-20">
         <div className="container-x text-center">
           <SectionTitle className="uppercase tracking-tighter mb-8 md:!text-6xl">
             Choose the <span className="text-[#c8a34d]">Structured Path.</span>

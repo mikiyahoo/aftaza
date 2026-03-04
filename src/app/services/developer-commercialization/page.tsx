@@ -45,10 +45,10 @@ const systemModules = [
 
 export default function DeveloperSystemsPage() {
   return (
-    <main className="bg-white text-slate-900 selection:bg-slate-900 selection:text-white">
+    <main data-header-text="light" className="bg-white text-slate-900 selection:bg-slate-900 selection:text-white">
       
       {/* HERO: THE ENGINEERING PROMISE */}
-      <section className="relative pt-32 pb-20 border-b-8 border-slate-950">
+      <section data-header-text="light" className="relative pt-32 pb-20 border-b-8 border-slate-950">
         <div className="container-x">
           <div className="max-w-5xl">
             <span className="text-[#c8a34d] font-mono text-[10px] font-bold tracking-[0.5em] uppercase mb-8 block">Revenue_Silo_01 // Institutional_Grade</span>
@@ -70,7 +70,7 @@ export default function DeveloperSystemsPage() {
       </section>
 
       {/* THE MARKET PROBLEM: DIAGNOSTIC CRITIQUE */}
-      <section className="py-24 bg-slate-50 border-b border-slate-200">
+      <section data-header-text="light" className="py-24 bg-slate-50 border-b border-slate-200">
         <div className="container-x">
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-5">
@@ -96,7 +96,7 @@ export default function DeveloperSystemsPage() {
       </section>
 
       {/* THE INTERVENTION: SYSTEM ARCHITECTURE */}
-      <section className="py-24 bg-white">
+      <section data-header-text="light" className="py-24 bg-white">
         <div className="container-x">
           <div className="flex flex-col lg:flex-row justify-between items-end mb-20">
             <SectionTitle className="uppercase tracking-tighter leading-none md:!text-6xl">
@@ -144,7 +144,7 @@ export default function DeveloperSystemsPage() {
       </section>
 
       {/* METRIC TRACKING SECTION */}
-      <section className="py-24 bg-white">
+      <section data-header-text="light" className="py-24 bg-white">
         <div className="container-x">
           <div className="bg-slate-50 border border-slate-200 p-12 flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="max-w-md">
@@ -164,7 +164,7 @@ export default function DeveloperSystemsPage() {
       </section>
 
       {/* STRATEGIC CTA: THE DECISION POINT */}
-      <section className="py-32 bg-white relative">
+      <section data-header-text="light" className="py-32 bg-white relative">
         <div className="container-x text-center border-t border-slate-100 pt-32">
           <div className="max-w-3xl mx-auto">
              <SectionTitle size="hero" className="uppercase tracking-tighter mb-10 leading-[0.85] md:!text-7xl">

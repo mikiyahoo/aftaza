@@ -2,24 +2,22 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { 
-  ShieldCheck, 
-  BarChart3, 
-  TrendingUp, 
-  ArrowRight, 
+import {
+  ShieldCheck,
+  BarChart3,
+  TrendingUp,
+  ArrowRight,
   Briefcase,
   Zap,
   Scale,
-  FileText, 
+  FileText,
   Search,
-  Activity,
-  ChevronRight
+  Activity
 } from "lucide-react";
 import Section, { SectionTitle } from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
-import { ComplianceBar } from "@/components/ui/SystemUI";
+import Badge from "@/components/ui/Badge";
 
 const services = [
   {
@@ -69,33 +67,53 @@ const methodology = [
 
 export default function ServicesHub() {
   return (
-    <main className="bg-white text-[#09111f] selection:bg-[#c8a34d] selection:text-white">
+    <main className="bg-white text-brand-dark selection:bg-[#c8a34d] selection:text-white">
       
-      {/* 1. HERO - DARK (Stays dark for impact) */}
-      <section className="relative pt-40 pb-24 bg-[#04080f] text-white border-b border-white/5 overflow-hidden">
-        <div className="absolute inset-0 blueprint-grid opacity-20" />
-        <Container className="relative z-10">
-          <div className="max-w-5xl">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="mb-8">
-              <ComplianceBar
-                label="AFTAZA_PLC // Service_Infrastructure"
-                tone="green"
-                className="gap-4 [&_.compliance-label]:text-[#c8a34d] [&_.compliance-label]:tracking-[0.4em]"
-              />
-            </motion.div>
-            <SectionTitle as="h1" tone="dark" size="hero" className="mb-8 !text-5xl md:!text-7xl">
-              Institutional Systems That Turn <br /> <span className="text-[#c8a34d]">Projects Into Revenue.</span>
+      {/* 1. HERO */}
+      <section
+        className="relative min-h-[90vh] flex items-center overflow-hidden"
+        style={{
+          backgroundImage: `url('/images/aftaza-developer-commercialization-system.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/80 to-transparent z-10" />
+
+        <div className="container-x relative z-20 pt-20">
+          <div className="max-w-[850px]">
+            <Badge className="mb-6">Service Infrastructure</Badge>
+            <SectionTitle as="h1" tone="dark" size="hero" className="mb-8 md:!text-7xl">
+              Institutional Systems That Turn <br />
+              <span className="text-[#c8a34d]">Projects Into Revenue.</span>
             </SectionTitle>
-            <p className="text-xl text-slate-400 font-body max-w-3xl mb-12">Compliance-driven transaction advisory designed to increase trust and protect stakeholders in Ethiopia.</p>
-            <div className="flex gap-6">
-              <Button className="btn-primary">Structure Engagement</Button>
-            </div>
+            <p className="text-lg text-slate-300 max-w-xl leading-relaxed border-l-2 border-[#c8a34d] pl-8">
+              Compliance-driven transaction advisory designed to increase trust and protect all stakeholders in Ethiopia's real estate market.
+            </p>
           </div>
-        </Container>
+        </div>
+
+        {/* Floating Institutional Bar */}
+        <div className="absolute bottom-0 left-0 w-full bg-white/5 backdrop-blur-xl border-t border-white/10 z-20 hidden lg:block">
+          <div className="container-x grid grid-cols-4">
+            {[
+              { icon: ShieldCheck, label: "Governance" },
+              { icon: Zap, label: "Commercialization" },
+              { icon: TrendingUp, label: "Investor Enablement" },
+              { icon: FileText, label: "Documentation" },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-4 p-6 border-r border-white/10 last:border-r-0 group">
+                <Icon size={20} className="text-[#c8a34d] transition-transform duration-500 group-hover:scale-125" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/90">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* 2. PHILOSOPHY - WHITE (Changed to Light) */}
-      <Section className="bg-white py-32">
+      <Section data-header-text="light" className="bg-white py-32">
         <Container>
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div>
@@ -116,7 +134,7 @@ export default function ServicesHub() {
               </div>
             </div>
             <div className="relative group">
-              <div className="relative bg-[#09111f] p-16 text-center shadow-2xl">
+              <div className="relative bg-brand-navy p-16 text-center shadow-2xl">
                 <span className="text-[#c8a34d] font-display text-5xl font-black block mb-4 italic tracking-tighter">Trust → Velocity</span>
                 <p className="text-[10px] uppercase tracking-[0.5em] font-mono text-slate-500">The Revenue Multiplier</p>
               </div>
@@ -126,7 +144,7 @@ export default function ServicesHub() {
       </Section>
 
       {/* 3. SERVICE SUITE - DARK (Blue section for cards) */}
-      <Section className="bg-[#04080f] text-white" dark>
+      <Section className="bg-brand-navy text-white" dark>
         <Container>
           <div className="flex justify-between items-end mb-16">
             <SectionTitle tone="dark" className="uppercase tracking-tighter">Core Service Suites</SectionTitle>
@@ -135,7 +153,7 @@ export default function ServicesHub() {
 
           <div className="grid md:grid-cols-2 gap-px bg-white/5 border border-white/5">
             {services.map((service) => (
-              <Link key={service.id} href={`/services/${service.id}`} className="group bg-[#04080f] p-12 transition-all hover:bg-[#09111f] block">
+              <Link key={service.id} href={`/services/${service.id}`} className="group bg-brand-navy p-12 transition-all hover:bg-brand-navy/90 block">
                 <div className="flex justify-between mb-12">
                    <div className="p-4 bg-[#c8a34d]/10 text-[#c8a34d] group-hover:bg-[#c8a34d] group-hover:text-[#04080f] transition-all">
                      <service.icon size={28} />
@@ -154,7 +172,7 @@ export default function ServicesHub() {
       </Section>
 
       {/* 4. METHODOLOGY - WHITE (Changed to Light) */}
-      <Section className="bg-white border-b border-slate-100">
+      <Section data-header-text="light" className="bg-white border-b border-slate-100">
         <Container>
           <div className="mb-16">
             <SectionTitle className="uppercase">
@@ -166,7 +184,7 @@ export default function ServicesHub() {
               <div key={i} className="group">
                 <div className="terminal-text text-[9px] text-slate-400 mb-6">{m.code}</div>
                 <m.icon size={24} className="text-[#c8a34d] mb-6" />
-                <h4 className="text-lg font-display font-bold uppercase text-[#09111f] mb-4">{m.t}</h4>
+                <h4 className="text-lg font-display font-bold uppercase text-brand-dark mb-4">{m.t}</h4>
                 <p className="text-sm text-slate-500 leading-relaxed font-body">{m.d}</p>
               </div>
             ))}

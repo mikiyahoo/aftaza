@@ -68,12 +68,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-[#09111f]/60 backdrop-blur-sm" 
+            className="absolute inset-0 bg-brand-navy/60 backdrop-blur-sm" 
           />
 
           <motion.div 
             variants={containerVariants}
-            className="relative w-full max-w-md bg-[#09111f] h-full shadow-2xl border-l border-white/5 flex flex-col p-8 md:p-12"
+            className="relative w-full max-w-md bg-brand-navy h-full shadow-2xl border-l border-white/5 flex flex-col p-8 md:p-12"
           >
             {/* Close Button */}
             <Button onClick={onClose} className="self-end mb-12 text-white/50 hover:text-white flex items-center gap-2 uppercase text-[10px] tracking-[0.3em] font-bold transition-colors">

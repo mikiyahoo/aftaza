@@ -112,7 +112,7 @@ export default function InvestorEnablementPage() {
       
 
       {/* METRIC ALIGNMENT */}
-      <section className="py-24 bg-white text-slate-950">
+      <section data-header-text="light" className="py-24 bg-white text-slate-950">
         <div className="container-x">
           <div className="grid lg:grid-cols-3 gap-16 items-start">
             <div className="lg:col-span-1">

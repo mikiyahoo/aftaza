@@ -39,7 +39,7 @@ export default function PositioningSection() {
   ];
 
   return (
-    <section className="positioning-section section-y relative overflow-hidden min-h-screen flex items-center bg-[#09111f]">
+    <section className="positioning-section section-y relative overflow-hidden min-h-screen flex items-center bg-brand-dark">
       {/* Background Atmosphere */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(200,163,77,0.04),transparent_70%)] pointer-events-none" />
 
@@ -103,7 +103,6 @@ export default function PositioningSection() {
                   transition={{ delay: i * 0.1, duration: 0.5 }}
                   viewport={{ once: true }}
                   className="rounded-sm"
-                  nodeId={p.nodeId}
                   index={i + 1}
                   title={p.label}
                   description={p.desc}

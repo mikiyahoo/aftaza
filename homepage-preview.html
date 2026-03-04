@@ -65,7 +65,7 @@ a{text-decoration:none}
 
 /* ─── HERO ─── */
 .hero{position:relative;min-height:calc(100vh - 120px);display:flex;align-items:center;background:var(--dark);overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(200,163,77,.06) 0%,transparent 70%),radial-gradient(ellipse 50% 80% at 90% 80%,rgba(200,163,77,.03) 0%,transparent 60%),linear-gradient(160deg,#09111f 0%,#0c1628 40%,#09111f 100%);z-index:0}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(200,163,77,.06) 0%,transparent 70%),radial-gradient(ellipse 50% 80% at 90% 80%,rgba(200,163,77,.03) 0%,transparent 60%),linear-gradient(160deg,#09111f 0%,var(--dark) 40%,#09111f 100%);z-index:0}
 .hero-geo{position:absolute;top:0;right:0;width:50%;height:100%;z-index:0;opacity:.4;overflow:hidden}
 .hero-fade{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--dark));z-index:1}
 .hero-content{position:relative;z-index:1;padding:4rem 0;max-width:860px}
@@ -109,14 +109,14 @@ a{text-decoration:none}
 @media(min-width:640px){.eco-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1024px){.eco-grid{grid-template-columns:repeat(4,1fr)}}
 .eco-step{background:#09111f;padding:2.5rem 2rem;display:flex;flex-direction:column;gap:1.25rem;position:relative;overflow:hidden;transition:background .3s ease;cursor:default}
-.eco-step:hover{background:#0c1628}
+.eco-step:hover{background:var(--dark)}
 .eco-num{font-size:.675rem;font-weight:700;letter-spacing:.16em;color:#c8a34d;text-transform:uppercase}
 .eco-h{font-family:var(--font-display);font-size:1.625rem;color:#f1f5f9;line-height:1.2}
 .eco-p{color:#64748b;font-size:.8375rem;line-height:1.75;flex-grow:1}
 
 /* ─── DIFFERENTIATOR ─── */
 .diff-row{background:#09111f;padding:2rem 2.5rem;display:grid;grid-template-columns:80px 1fr;gap:2rem;align-items:start;transition:background .3s ease;cursor:default;margin-bottom:1px}
-.diff-row:hover{background:#0c1628}
+.diff-row:hover{background:var(--dark)}
 .diff-num{font-family:var(--font-display);font-size:3rem;font-weight:400;color:rgba(200,163,77,.15);line-height:1}
 .diff-title{font-family:var(--font-display);font-size:1.375rem;color:#f1f5f9;margin-bottom:.625rem}
 .diff-desc{color:#64748b;font-size:.875rem;line-height:1.75}
@@ -438,7 +438,7 @@ a{text-decoration:none}
 <!-- ══════════════════════════════════════════════
      DIFFERENTIATORS
 ══════════════════════════════════════════════ -->
-<section class="sy" style="background:linear-gradient(180deg,#0c1628 0%,#09111f 100%);position:relative;overflow:hidden">
+<section class="sy" style="background:linear-gradient(180deg,var(--dark) 0%,#09111f 100%);position:relative;overflow:hidden">
   <div class="divider" style="position:absolute;top:0;left:0;right:0"></div>
   <div class="c">
     <div style="max-width:520px;margin-bottom:3.5rem">

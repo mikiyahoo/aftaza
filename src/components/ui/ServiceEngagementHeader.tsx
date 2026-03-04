@@ -18,7 +18,7 @@ interface ServiceEngagementHeaderProps {
 
 export default function ServiceEngagementHeader({ activePhase = "01" }: ServiceEngagementHeaderProps) {
   return (
-    <div className="w-full bg-[#09111f] border-y border-white/5 py-6">
+    <div className="w-full bg-brand-dark border-y border-white/5 py-6">
       <div className="container-x">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           

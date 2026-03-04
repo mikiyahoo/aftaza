@@ -34,7 +34,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   const Icon = service.icon;
 
   return (
-    <main className="bg-[#04080f] text-white min-h-screen">
+    <main className="bg-brand-navy text-white min-h-screen">
       {/* 1. TECHNICAL HEADER / BREADCRUMB */}
       <section className="pt-32 pb-16 border-b border-white/5 relative overflow-hidden">
         <div className="absolute inset-0 blueprint-grid opacity-10" />
@@ -81,7 +81,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
               </p>
               <div className="grid md:grid-cols-2 gap-4 mt-12">
                 {service.features.map((feature, idx) => (
-                  <div key={idx} className="p-6 bg-[#09111f] border border-white/5 flex items-start gap-4 hover:border-[#c8a34d]/30 transition-colors">
+                  <div key={idx} className="p-6 bg-brand-navy border border-white/5 flex items-start gap-4 hover:border-[#c8a34d]/30 transition-colors">
                     <ShieldCheck size={18} className="text-[#c8a34d] mt-1" />
                     <span className="text-sm font-body text-slate-400">{feature}</span>
                   </div>
@@ -91,7 +91,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
             {/* Side Technical Data Panel */}
             <div className="lg:col-span-5">
-              <div className="sticky top-32 p-8 bg-[#09111f] border border-white/5 relative overflow-hidden group">
+              <div className="sticky top-32 p-8 bg-brand-navy border border-white/5 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <Database size={120} />
                 </div>
@@ -119,7 +119,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       </Section>
 
       {/* 4. INTEGRATED GOVERNANCE (Methodology Preview) */}
-      <section className="py-24 bg-white text-[#09111f]">
+      <section data-header-text="light" className="py-24 bg-white text-brand-dark">
         <Container>
           <div className="mb-16">
             <SectionTitle className="!text-3xl uppercase tracking-tighter">Governance Framework</SectionTitle>

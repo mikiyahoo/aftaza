@@ -25,10 +25,10 @@ const pillars = [
 
 export default function MethodologyPage() {
   return (
-    <main className="bg-white text-slate-900 overflow-x-hidden snap-container">
+    <main data-header-text="light" className="bg-white text-slate-900 overflow-x-hidden snap-container">
       
       {/* HERO SECTION - SNAP 1 */}
-      <section className="snap-section bg-[#F8F9FB]">
+      <section data-header-text="light" className="snap-section bg-[#F8F9FB]">
         <div className="grid-pattern absolute inset-0 opacity-[0.4] [mask-image:radial-gradient(ellipse_at_center,black,transparent)]" />
         
         {/* Decorative background "01" */}
@@ -145,7 +145,7 @@ export default function MethodologyPage() {
       </section>
 
       {/* SECTION 3: STRUCTURED FLOW + CTA CARD - PERFECTLY BALANCED */}
-      <section className="snap-section bg-slate-50 relative overflow-hidden flex items-center">
+      <section data-header-text="light" className="snap-section bg-slate-50 relative overflow-hidden flex items-center">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-[0.03]">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#c8a34d20_1px,transparent_1px),linear-gradient(to_bottom,#c8a34d20_1px,transparent_1px)] bg-[size:30px_30px]" />

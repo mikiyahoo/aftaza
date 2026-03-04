@@ -100,12 +100,12 @@ export default function Hero() {
 
   return (
     <section
-      className="relative h-screen w-full flex items-center overflow-hidden bg-[#09111f]"
+      className="relative h-screen w-full flex items-center overflow-hidden bg-brand-navy"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background Layers */}
-      <div className="absolute inset-0 z-0 bg-[#09111f]" />
+      <div className="absolute inset-0 z-0 bg-brand-navy" />
       
       <AnimatePresence mode="wait">
         <motion.div
@@ -124,8 +124,8 @@ export default function Hero() {
             className="object-cover object-center"
             style={{ objectPosition: 'center 30%' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#09111f] via-[#09111f]/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#09111f] via-[#09111f]/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/30 to-transparent" />
         </motion.div>
       </AnimatePresence>
 
@@ -251,7 +251,7 @@ export default function Hero() {
       </div>
 
       {/* Subtle bottom fade */}
-      <div className="absolute bottom-0 left-0 w-full h-16 md:h-24 bg-gradient-to-t from-[#09111f] to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-16 md:h-24 bg-gradient-to-t from-brand-dark to-transparent z-10 pointer-events-none" />
     </section>
   );
 }

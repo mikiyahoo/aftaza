@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function TopBar() {
   return (
-    <div className="hidden lg:block w-full bg-[#09111f] border-b border-white/[0.03] overflow-hidden">
+    <div className="hidden lg:block w-full bg-brand-navy border-b border-white/[0.03] overflow-hidden">
       <div className="container-x flex items-center justify-between py-2 relative">
         
         {/* Left - Status / Location Indicator */}

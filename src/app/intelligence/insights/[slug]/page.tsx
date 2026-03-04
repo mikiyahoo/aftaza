@@ -14,7 +14,7 @@ export default async function InsightPage({
   }
 
   return (
-    <main className="bg-white pt-32 pb-20">
+    <main data-header-text="light" className="bg-white pt-32 pb-20">
       <div className="container-x max-w-3xl">
         <Link
           href="/intelligence/insights"

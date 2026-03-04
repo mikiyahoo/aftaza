@@ -43,7 +43,7 @@ function CounterItem({
   return (
     <div
       ref={ref}
-      className="relative p-8 md:p-10 border-r border-white/5 last:border-r-0 group overflow-hidden bg-[#09111f] transition-colors duration-500 hover:bg-[#0c1628]"
+      className="relative p-8 md:p-10 border-r border-white/5 last:border-r-0 group overflow-hidden bg-brand-dark transition-colors duration-500 hover:bg-brand-dark/90"
     >
       {/* Technical Header */}
       <div className="flex justify-between items-start mb-6">
@@ -84,7 +84,7 @@ function CounterItem({
 
 export default function MetricsSection() {
   return (
-    <section className="relative py-24 bg-[#09111f] overflow-hidden">
+    <section className="relative py-24 bg-brand-dark overflow-hidden">
       {/* Background Atmosphere */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(200,163,77,0.03),transparent_50%)]" />
       

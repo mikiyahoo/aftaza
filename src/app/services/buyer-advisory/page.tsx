@@ -27,10 +27,10 @@ const engagementSteps = [
 
 export default function BuyerAdvisoryPage() {
   return (
-    <main className="bg-white text-slate-900 min-h-screen">
+    <main data-header-text="light" className="bg-white text-slate-900 min-h-screen">
       
       {/* HERO: THE GOVERNED PATHWAY */}
-      <section className="pt-32 pb-20 border-b border-slate-100 bg-slate-50">
+      <section data-header-text="light" className="pt-32 pb-20 border-b border-slate-100 bg-slate-50">
         <div className="container-x">
           <div className="max-w-4xl">
             <span className="text-[#c8a34d] font-mono text-[10px] font-bold tracking-[0.4em] uppercase mb-6 block underline underline-offset-8">Fiduciary_Silo_02</span>
@@ -84,7 +84,7 @@ export default function BuyerAdvisoryPage() {
       </section>
 
       {/* THE STEP MODEL: VISUAL JOURNEY */}
-      <section className="py-24 bg-white">
+      <section data-header-text="light" className="py-24 bg-white">
         <div className="container-x">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <SectionTitle className="uppercase tracking-tighter mb-6 md:!text-6xl">The Structured <br /> <span className="text-[#c8a34d]">Buyer Journey.</span></SectionTitle>
@@ -106,7 +106,7 @@ export default function BuyerAdvisoryPage() {
       
 
       {/* RISK INDICATORS TABLE */}
-      <section className="py-24 bg-slate-50">
+      <section data-header-text="light" className="py-24 bg-slate-50">
         <div className="container-x">
           <div className="bg-white border border-slate-200 p-12 shadow-sm">
             <h3 className="text-2xl font-display font-black uppercase mb-10 text-center tracking-tight">Technical Indicators We Monitor</h3>

@@ -145,7 +145,7 @@
   background-color: #c8a34d;
 }
 .group:hover .group-hover\:text-\[\#09111f\] {
-  color: #09111f;
+  color: var(--dark);
 }
 .group:hover .group-hover\:via-\[\#c8a34d\]\/30 {
   --tw-gradient-via: rgba(200, 163, 77, 0.3);

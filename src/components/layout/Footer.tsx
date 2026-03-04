@@ -64,7 +64,7 @@ export default function Footer() {
               <h3 style={{ 
                 fontFamily: "var(--font-display)", 
                 fontSize: "1.25rem", 
-                color: "#09111f", // Dark Navy text for white bg
+                color: "var(--dark)", // Dark Navy text for white bg
                 margin: 0,
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
@@ -106,7 +106,7 @@ export default function Footer() {
               className="hover:bg-[#dfc278] transition-all"
               style={{
                 background: "#c8a34d", // Gold
-                color: "#09111f", // Dark Navy
+                color: "var(--dark)", // Dark Navy
                 border: "none",
                 padding: "0 2rem",
                 cursor: "pointer",
