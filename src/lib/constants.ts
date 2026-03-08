@@ -43,6 +43,7 @@ export const NAV_LINKS = [
       { label: "Insights Hub",         href: "/intelligence/insights",            desc: "Institutional intelligence & analysis" },
     ],
   },
+  { label: "Properties",   href: "/properties" },
   { label: "Case Studies", href: "/case-studies" },
   { label: "Contact",      href: "/contact" },
 ];

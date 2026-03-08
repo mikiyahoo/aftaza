@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -29,4 +30,61 @@ model Post {
   updatedAt    DateTime @updatedAt
   authorId     String
   author       User     @relation(fields: [authorId], references: [id])
+}
+
+// Property Management Models
+
+model Company {
+  id         String     @id @default(cuid())
+  name       String
+  phone      String?
+  email      String?
+  properties Property[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Property {
+  id          String          @id @default(cuid())
+  title       String
+  slug        String          @unique
+  type        PropertyType   @default(HOUSE)
+  status      PropertyStatus @default(FOR_SALE)
+  price       Float
+  location    String
+  bedrooms    Int?
+  bathrooms   Int?
+  parking     Int?
+  landSize    Float?
+  description String?
+  published   Boolean        @default(true)
+  companyId   String?
+  company     Company?       @relation(fields: [companyId], references: [id])
+  images      PropertyImage[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  url        String
+  position   Int      @default(0)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  LAND
+  VILLA
+  COMMERCIAL
+}
+
+enum PropertyStatus {
+  FOR_SALE
+  SOLD
+  RENTED
+  PENDING
 }

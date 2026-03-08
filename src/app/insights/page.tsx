@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
@@ -5,12 +6,12 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 10;
 
-interface InsightsPageProps {
+type InsightsPageProps = {
   searchParams?: { page?: string };
-}
+};
 
 export default async function InsightsPage({ searchParams }: InsightsPageProps) {
-  const page = Number(searchParams?.page ?? "1") || 1;
+  const page = Math.max(1, Number(searchParams?.page ?? "1") || 1);
   const skip = (page - 1) * PAGE_SIZE;
 
   const [posts, total] = await Promise.all([
@@ -30,14 +31,12 @@ export default async function InsightsPage({ searchParams }: InsightsPageProps) 
   return (
     <main data-header-text="light" className="bg-white pt-32 pb-20">
       <div className="container-x">
-        <header className="border-b border-slate-900 pb-10 mb-12">
-          <h1 className="text-5xl md:text-6xl font-display font-black uppercase tracking-tighter">
-            Insights &amp;{" "}
-            <span className="text-[#c8a34d]">Market Frameworks</span>
+        <header className="mb-12 border-b border-slate-200 pb-10">
+          <h1 className="text-5xl font-display font-black uppercase tracking-tight md:text-6xl">
+            Insights &amp; Market Frameworks
           </h1>
-          <p className="mt-6 text-slate-500 font-mono text-xs uppercase tracking-widest max-w-xl">
-            Live institutional publications from AFTAZA — database-backed insights that govern
-            how we de-risk transactions and structure commercialization systems.
+          <p className="mt-6 max-w-xl text-sm uppercase tracking-[0.22em] text-slate-500">
+            Live institutional publications from AFTAZA's database-backed insight system.
           </p>
         </header>
 
@@ -46,75 +45,71 @@ export default async function InsightsPage({ searchParams }: InsightsPageProps) 
             No published insights yet. Once posts are published from the admin console, they will appear here.
           </p>
         ) : (
-          <div className="space-y-12">
+          <div className="space-y-8">
             {posts.map((post) => (
               <Link
                 key={post.id}
                 href={`/insights/${post.slug}`}
-                className="group block border-b border-slate-100 pb-10"
+                className="group grid gap-6 rounded-[32px] border border-slate-200/80 bg-white p-5 shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-transform duration-300 hover:-translate-y-1 lg:grid-cols-[minmax(0,2fr)_minmax(280px,0.95fr)]"
               >
-                <article className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] items-start">
-                  <div>
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-[#c8a34d] mb-3">
-                      Aftaza_Insight
-                    </p>
-                    <h2 className="text-2xl md:text-3xl font-display font-black uppercase tracking-tight group-hover:underline decoration-[#c8a34d] decoration-2 underline-offset-8">
-                      {post.title}
-                    </h2>
-                    <p className="mt-4 text-slate-500 text-sm md:text-base leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                    <div className="mt-6 flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
-                      <span>Read Insight</span>
-                      <div className="h-px w-8 bg-slate-900 group-hover:w-16 transition-all" />
-                    </div>
+                <div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.28em] text-[#c8a34d]">
+                    Aftaza Insight
+                  </p>
+                  <h2 className="mt-3 font-display text-3xl font-black uppercase tracking-tight text-slate-950 transition-colors group-hover:text-[#c8a34d]">
+                    {post.title}
+                  </h2>
+                  <p className="mt-4 text-sm leading-8 text-slate-600">{post.excerpt}</p>
+                  <div className="mt-6 text-[11px] font-black uppercase tracking-[0.28em] text-slate-500">
+                    {post.createdAt.toLocaleDateString()}
                   </div>
+                </div>
 
-                  {/* Thumbnail */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                <div className="relative min-h-[220px] overflow-hidden rounded-[24px] bg-slate-100">
                   {post.thumbnailUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={post.thumbnailUrl}
                       alt={post.title}
-                      className="w-full h-52 md:h-64 rounded-lg object-cover border border-slate-100 shadow-sm"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 320px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-52 md:h-64 rounded-lg border border-slate-100 shadow-sm bg-slate-100 flex items-center justify-center text-xs text-slate-500 uppercase tracking-widest">
+                    <div className="absolute inset-0 flex items-center justify-center bg-slate-100 text-xs uppercase tracking-[0.24em] text-slate-500">
                       No Thumbnail
                     </div>
                   )}
-                </article>
+                </div>
               </Link>
             ))}
           </div>
         )}
 
-        {totalPages > 1 && (
+        {totalPages > 1 ? (
           <div className="mt-12 flex items-center justify-between text-xs text-slate-500">
             <span>
               Page {page} of {totalPages}
             </span>
             <div className="flex items-center gap-3">
-              {page > 1 && (
+              {page > 1 ? (
                 <Link
                   href={`/insights?page=${page - 1}`}
-                  className="text-[10px] font-black uppercase tracking-widest hover:text-[#c8a34d]"
+                  className="text-[11px] font-black uppercase tracking-[0.28em] transition hover:text-[#c8a34d]"
                 >
                   Previous
                 </Link>
-              )}
-              {page < totalPages && (
+              ) : null}
+              {page < totalPages ? (
                 <Link
                   href={`/insights?page=${page + 1}`}
-                  className="text-[10px] font-black uppercase tracking-widest hover:text-[#c8a34d]"
+                  className="text-[11px] font-black uppercase tracking-[0.28em] transition hover:text-[#c8a34d]"
                 >
                   Next
                 </Link>
-              )}
+              ) : null}
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </main>
   );

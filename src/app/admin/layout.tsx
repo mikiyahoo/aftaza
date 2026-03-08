@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, LayoutDashboard, FilePlus } from "lucide-react";
+import { ShieldCheck, LayoutDashboard, FilePlus, Building2 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,6 +29,37 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           >
             <LayoutDashboard size={16} /> Public Insights
           </Link>
+          
+          {/* Properties Section */}
+          <div className="pt-6 mt-6 border-t border-white/10">
+            <p className="px-3 pb-2 text-[9px] font-bold uppercase tracking-widest text-slate-500">
+              Manage Properties
+            </p>
+            <Link
+              href="/admin/properties"
+              className="flex items-center gap-3 p-3 text-[10px] font-bold uppercase tracking-widest hover:bg-white/5 transition-colors"
+            >
+              <Building2 size={16} /> Properties
+            </Link>
+            <Link
+              href="/admin/properties/add-property"
+              className="flex items-center gap-3 pl-10 p-2 text-[10px] font-bold uppercase tracking-widest hover:bg-white/5 transition-colors opacity-80"
+            >
+              <span className="w-1 h-1 rounded-full bg-[#c8a34d]" /> Add Property
+            </Link>
+            <Link
+              href="/admin/properties/manage-properties"
+              className="flex items-center gap-3 pl-10 p-2 text-[10px] font-bold uppercase tracking-widest hover:bg-white/5 transition-colors opacity-80"
+            >
+              <span className="w-1 h-1 rounded-full bg-[#c8a34d]" /> Manage
+            </Link>
+            <Link
+              href="/admin/properties/companies"
+              className="flex items-center gap-3 pl-10 p-2 text-[10px] font-bold uppercase tracking-widest hover:bg-white/5 transition-colors opacity-80"
+            >
+              <span className="w-1 h-1 rounded-full bg-[#c8a34d]" /> Companies
+            </Link>
+          </div>
         </nav>
       </aside>
 

@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcrypt";
-import "dotenv/config";
 
 const prisma = new PrismaClient({
   log: ["query", "error", "warn"],

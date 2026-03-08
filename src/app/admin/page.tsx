@@ -1,13 +1,25 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import Button from "@/components/ui/Button";
+import DatabaseStatusNotice from "@/components/admin/DatabaseStatusNotice";
+import { getDatabaseErrorMessage } from "@/lib/database-error";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const posts = await prisma.post.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  let posts: Awaited<ReturnType<typeof prisma.post.findMany>> = [];
+  let databaseError: string | null = null;
+
+  try {
+    posts = await prisma.post.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (error) {
+    databaseError = getDatabaseErrorMessage(
+      error,
+      "The insights console loaded without live data because the database connection failed."
+    );
+  }
 
   return (
     <main data-header-text="light" className="min-h-screen bg-slate-50 pt-24 pb-20">
@@ -31,6 +43,12 @@ export default async function AdminDashboardPage() {
             </Button>
           </Link>
         </header>
+
+        {databaseError ? (
+          <DatabaseStatusNotice
+            message={`${databaseError} Check DATABASE_URL connectivity before creating or editing insights.`}
+          />
+        ) : null}
 
         <section className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
           <div className="border-b border-slate-100 px-6 py-3 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
@@ -80,4 +98,3 @@ export default async function AdminDashboardPage() {
     </main>
   );
 }
-
