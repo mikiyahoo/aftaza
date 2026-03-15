@@ -65,8 +65,8 @@ export default function ManagePropertiesPage() {
         setProperties(propertiesData.properties);
       }
 
-      if (companiesData.companies) {
-        setCompanies(companiesData.companies);
+      if (companiesData) {
+        setCompanies(companiesData);
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);

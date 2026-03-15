@@ -54,7 +54,7 @@ export async function PUT(
     if (isPrimary) {
       await prisma.propertyImage.updateMany({
         where: { 
-          propertyId: params.id,
+          propertyId: parseInt(params.id),
           id: { not: imageId },
         },
         data: { isPrimary: false },

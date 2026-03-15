@@ -9,9 +9,15 @@ export async function GET(
 ) {
   try {
     const { id } = params;
+    
+    // Convert string ID to number
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return NextResponse.json({ error: 'Invalid property ID' }, { status: 400 });
+    }
 
     const images = await prisma.propertyImage.findMany({
-      where: { propertyId: id },
+      where: { propertyId: numericId },
       orderBy: [
         { isPrimary: 'desc' },
         { sortOrder: 'asc' },
@@ -38,6 +44,13 @@ export async function POST(
   
   try {
     const { id } = params;
+    
+    // Convert string ID to number
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return NextResponse.json({ error: 'Invalid property ID' }, { status: 400 });
+    }
+    
     const body = await request.json();
     const { images } = body;
 
@@ -49,8 +62,8 @@ export async function POST(
     }
 
     // Check if property exists
-    const property = await prisma.property.findUnique({
-      where: { id },
+    const property = await prisma.properties.findUnique({
+      where: { id: numericId },
     });
 
     if (!property) {
@@ -59,7 +72,7 @@ export async function POST(
 
     // Get current max sort order
     const lastImage = await prisma.propertyImage.findFirst({
-      where: { propertyId: id },
+      where: { propertyId: numericId },
       orderBy: { sortOrder: 'desc' },
     });
 
@@ -70,7 +83,7 @@ export async function POST(
       images.map((img: any, index: number) =>
         prisma.propertyImage.create({
           data: {
-            propertyId: id,
+            propertyId: numericId,
             imageUrl: img.imageUrl,
             isPrimary: img.isPrimary || (index === 0 && startOrder === 0),
             sortOrder: img.sortOrder ?? startOrder + index,

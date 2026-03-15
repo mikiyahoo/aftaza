@@ -9,9 +9,15 @@ export async function GET(
 ) {
   try {
     const { id } = params;
+    
+    // Convert string ID to number
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return NextResponse.json({ error: 'Invalid property ID' }, { status: 400 });
+    }
 
-    const property = await prisma.property.findUnique({
-      where: { id },
+    const property = await prisma.properties.findUnique({
+      where: { id: numericId },
       include: {
         company: true,
         images: {
@@ -47,6 +53,13 @@ export async function PUT(
   
   try {
     const { id } = params;
+    
+    // Convert string ID to number
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return NextResponse.json({ error: 'Invalid property ID' }, { status: 400 });
+    }
+    
     const body = await request.json();
 
     const {
@@ -66,8 +79,8 @@ export async function PUT(
     } = body;
 
     // Check if property exists
-    const existingProperty = await prisma.property.findUnique({
-      where: { id },
+    const existingProperty = await prisma.properties.findUnique({
+      where: { id: numericId },
     });
 
     if (!existingProperty) {
@@ -76,7 +89,7 @@ export async function PUT(
 
     // Check if slug is being changed and if it's already taken
     if (slug && slug !== existingProperty.slug) {
-      const slugExists = await prisma.property.findUnique({
+      const slugExists = await prisma.properties.findUnique({
         where: { slug },
       });
 
@@ -88,14 +101,14 @@ export async function PUT(
       }
     }
 
-    const property = await prisma.property.update({
-      where: { id },
+    const property = await prisma.properties.update({
+      where: { id: numericId },
       data: {
         ...(title && { title }),
         ...(slug && { slug }),
         ...(price !== undefined && { price: parseFloat(price) }),
         ...(location && { location }),
-        ...(propertyType && { propertyType }),
+        ...(propertyType && { property_type: propertyType }),
         ...(status && { status }),
         ...(bedrooms !== undefined && { bedrooms: (bedrooms || bedrooms === 0) ? parseInt(bedrooms) : null }),
         ...(bathrooms !== undefined && { bathrooms: (bathrooms || bathrooms === 0) ? parseInt(bathrooms) : null }),
@@ -103,7 +116,7 @@ export async function PUT(
         ...(area !== undefined && { area: (area || area === 0) ? parseFloat(area) : null }),
         ...(description !== undefined && { description }),
         ...(featured !== undefined && { featured }),
-        ...(companyId !== undefined && { companyId: companyId || null }),
+        ...(companyId !== undefined && { company_id: companyId || null }),
       },
       include: {
         images: {
@@ -136,10 +149,16 @@ export async function DELETE(
   
   try {
     const { id } = params;
+    
+    // Convert string ID to number
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return NextResponse.json({ error: 'Invalid property ID' }, { status: 400 });
+    }
 
     // Check if property exists
-    const existingProperty = await prisma.property.findUnique({
-      where: { id },
+    const existingProperty = await prisma.properties.findUnique({
+      where: { id: numericId },
     });
 
     if (!existingProperty) {
@@ -147,8 +166,8 @@ export async function DELETE(
     }
 
     // Delete property (images will be cascade deleted)
-    await prisma.property.delete({
-      where: { id },
+    await prisma.properties.delete({
+      where: { id: numericId },
     });
 
     return NextResponse.json({ message: 'Property deleted successfully' });

@@ -422,7 +422,7 @@ export default function AddPropertyPage() {
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#c8a34d] focus:border-[#c8a34d] outline-none"
                 >
                   <option value="">No Company</option>
-                  {companies.map(company => (
+                  {companies && companies.map(company => (
                     <option key={company.id} value={company.id}>{company.name}</option>
                   ))}
                 </select>

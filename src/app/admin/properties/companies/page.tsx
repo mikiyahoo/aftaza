@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
+import { toast } from "@/components/ui/Toast";
 import { cn } from "@/lib/utils";
 
 interface Company {
@@ -17,8 +18,13 @@ interface Company {
 
 interface CompanyFormData {
   name: string;
+  description: string;
+  website: string;
+  logo_url: string;
   phone: string;
   email: string;
+  address: string;
+  is_active: boolean;
 }
 
 export default function CompaniesPage() {
@@ -28,8 +34,13 @@ export default function CompaniesPage() {
   const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
   const [formData, setFormData] = useState<CompanyFormData>({
     name: "",
+    description: "",
+    website: "",
+    logo_url: "",
     phone: "",
     email: "",
+    address: "",
+    is_active: true,
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -63,8 +74,7 @@ export default function CompaniesPage() {
        setFilteredCompanies(data);
      } catch (error) {
        console.error("Error fetching companies:", error);
-       // toast.error("Failed to load companies"); // Commented out since sonner might not be available
-       alert("Failed to load companies");
+       toast.error("Failed to load companies");
      } finally {
        setLoading(false);
      }
@@ -83,11 +93,35 @@ export default function CompaniesPage() {
     setFilteredCompanies(filtered);
   }, [companies, searchTerm]);
 
-   // Handle form submission
-   const handleSubmit = async (e: React.FormEvent) => {
-     e.preventDefault();
-     
-     try {
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name.trim()) {
+      toast.error("Company name is required");
+      return;
+    }
+    
+    // Validate email format if provided
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    
+    // Validate website format if provided
+    if (formData.website && !/^https?:\/\/.+\..+$/.test(formData.website)) {
+      toast.error("Please enter a valid website URL (e.g., https://example.com)");
+      return;
+    }
+    
+    // Validate logo URL format if provided
+    if (formData.logo_url && !/^https?:\/\/.+\..+\.(jpg|jpeg|png|gif|svg|webp)$/i.test(formData.logo_url)) {
+      toast.error("Please enter a valid logo URL (must be an image file)");
+      return;
+    }
+    
+    try {
        let response;
        if (editingId) {
          // Update existing company
@@ -99,8 +133,13 @@ export default function CompaniesPage() {
            credentials: "include",
            body: JSON.stringify({
              name: formData.name,
+             description: formData.description || null,
+             website: formData.website || null,
+             logo_url: formData.logo_url || null,
              phone: formData.phone || null,
              email: formData.email || null,
+             address: formData.address || null,
+             is_active: formData.is_active,
            }),
          });
        } else {
@@ -113,8 +152,13 @@ export default function CompaniesPage() {
            credentials: "include",
            body: JSON.stringify({
              name: formData.name,
+             description: formData.description || null,
+             website: formData.website || null,
+             logo_url: formData.logo_url || null,
              phone: formData.phone || null,
              email: formData.email || null,
+             address: formData.address || null,
+             is_active: formData.is_active,
            }),
          });
        }
@@ -130,19 +174,26 @@ export default function CompaniesPage() {
        }
 
        // Reset form and close dialog
-       setFormData({ name: "", phone: "", email: "" });
+       setFormData({
+         name: "",
+         description: "",
+         website: "",
+         logo_url: "",
+         phone: "",
+         email: "",
+         address: "",
+         is_active: true,
+       });
        setEditingId(null);
        setIsFormOpen(false);
        
        // Refresh companies list
        await fetchCompanies();
        
-       // toast.success(editingId ? "Company updated successfully" : "Company created successfully"); // Commented out since sonner might not be available
-       alert(editingId ? "Company updated successfully" : "Company created successfully");
+       toast.success(editingId ? "Company updated successfully" : "Company created successfully");
      } catch (error) {
        console.error("Error saving company:", error);
-       // toast.error(error.message || "Failed to save company"); // Commented out since sonner might not be available
-       alert((error as Error).message || "Failed to save company");
+       toast.error((error as Error).message || "Failed to save company");
      }
    };
 
@@ -173,29 +224,44 @@ export default function CompaniesPage() {
        // Refresh companies list
        await fetchCompanies();
        
-       // toast.success("Company deleted successfully"); // Commented out since sonner might not be available
-       alert("Company deleted successfully");
+       toast.success("Company deleted successfully");
      } catch (error) {
        console.error("Error deleting company:", error);
        setIsDeleting(false);
-       // toast.error(error.message || "Failed to delete company"); // Commented out since sonner might not be available
-       alert((error as Error).message || "Failed to delete company");
+       toast.error((error as Error).message || "Failed to delete company");
      }
    };
 
   // Handle form open for new company
   const handleAddCompany = () => {
-    setFormData({ name: "", phone: "", email: "" });
+    setFormData({
+      name: "",
+      description: "",
+      website: "",
+      logo_url: "",
+      phone: "",
+      email: "",
+      address: "",
+      is_active: true,
+    });
     setEditingId(null);
     setIsFormOpen(true);
   };
 
   // Handle form open for editing company
   const handleEditCompany = (company: Company) => {
+    // Note: We don't have the full company data with description, website, etc.
+    // This would need to be fetched from the API for a complete edit experience
+    // For now, we populate what we have and leave the rest empty
     setFormData({
       name: company.name,
+      description: "",
+      website: "",
+      logo_url: "",
       phone: company.phone || "",
       email: company.email || "",
+      address: "",
+      is_active: true,
     });
     setEditingId(company.id);
     setIsFormOpen(true);
@@ -337,6 +403,7 @@ export default function CompaniesPage() {
               
               {/* Modal Body */}
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                {/* Company Name */}
                 <div>
                   <label htmlFor="company-name" className="block text-sm font-medium text-gray-700 mb-1">
                     Company Name
@@ -348,10 +415,56 @@ export default function CompaniesPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-[var(--property-action-blue)]"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c8a34d] focus:border-transparent transition-colors"
                   />
                 </div>
                 
+                {/* Description */}
+                <div>
+                  <label htmlFor="company-description" className="block text-sm font-medium text-gray-700 mb-1">
+                    Description
+                  </label>
+                  <textarea
+                    id="company-description"
+                    placeholder="Enter company description"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c8a34d] focus:border-transparent transition-colors resize-vertical"
+                  />
+                </div>
+                
+                {/* Website */}
+                <div>
+                  <label htmlFor="company-website" className="block text-sm font-medium text-gray-700 mb-1">
+                    Website
+                  </label>
+                  <input
+                    id="company-website"
+                    type="url"
+                    placeholder="https://example.com"
+                    value={formData.website}
+                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c8a34d] focus:border-transparent transition-colors"
+                  />
+                </div>
+                
+                {/* Logo URL */}
+                <div>
+                  <label htmlFor="company-logo" className="block text-sm font-medium text-gray-700 mb-1">
+                    Logo URL
+                  </label>
+                  <input
+                    id="company-logo"
+                    type="url"
+                    placeholder="https://example.com/logo.png"
+                    value={formData.logo_url}
+                    onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c8a34d] focus:border-transparent transition-colors"
+                  />
+                </div>
+                
+                {/* Phone Number */}
                 <div>
                   <label htmlFor="company-phone" className="block text-sm font-medium text-gray-700 mb-1">
                     Phone Number
@@ -362,10 +475,11 @@ export default function CompaniesPage() {
                     placeholder="Enter phone number"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-[var(--property-action-blue)]"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c8a34d] focus:border-transparent transition-colors"
                   />
                 </div>
                 
+                {/* Email Address */}
                 <div>
                   <label htmlFor="company-email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email Address
@@ -376,20 +490,50 @@ export default function CompaniesPage() {
                     placeholder="Enter email address"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-[var(--property-action-blue)]"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c8a34d] focus:border-transparent transition-colors"
                   />
                 </div>
                 
-                <div className="flex items-center justify-end space-x-3 pt-4">
+                {/* Address */}
+                <div>
+                  <label htmlFor="company-address" className="block text-sm font-medium text-gray-700 mb-1">
+                    Address
+                  </label>
+                  <input
+                    id="company-address"
+                    type="text"
+                    placeholder="Enter company address"
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c8a34d] focus:border-transparent transition-colors"
+                  />
+                </div>
+                
+                {/* Is Active Toggle */}
+                <div>
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.is_active}
+                      onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                      className="w-4 h-4 text-[#c8a34d] bg-gray-100 border-gray-300 rounded focus:ring-[#c8a34d] focus:ring-2"
+                    />
+                    <span className="text-sm font-medium text-gray-700">Company is Active</span>
+                  </label>
+                </div>
+                
+                {/* Form Actions */}
+                <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-100">
                   <Button
                     variant="outline"
+                    type="button"
                     onClick={() => setIsFormOpen(false)}
                   >
                     Cancel
                   </Button>
                   <Button
                     variant="gold"
-                    onClick={handleSubmit}
+                    type="submit"
                   >
                     {editingId ? "Update Company" : "Add Company"}
                   </Button>

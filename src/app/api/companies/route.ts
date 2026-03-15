@@ -33,16 +33,33 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, phone, email } = body;
 
-    if (!name) {
+    if (!name || !name.trim()) {
       return NextResponse.json(
         { error: 'Company name is required' },
         { status: 400 }
       );
     }
 
+    // Check if company with this name already exists
+    const existingCompany = await prisma.company.findFirst({
+      where: {
+        name: {
+          equals: name.trim(),
+          mode: 'insensitive'
+        }
+      }
+    });
+
+    if (existingCompany) {
+      return NextResponse.json(
+        { error: 'A company with this name already exists' },
+        { status: 409 }
+      );
+    }
+
     const company = await prisma.company.create({
       data: {
-        name,
+        name: name.trim(),
         phone: phone || null,
         email: email || null,
       },
@@ -51,6 +68,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(company, { status: 201 });
   } catch (error) {
     console.error('Error creating company:', error);
-    return NextResponse.json({ error: 'Failed to create company' }, { status: 500 });
+    
+    // Provide more specific error messages
+    if (error && typeof error === 'object' && 'code' in error) {
+      const prismaError = error as { code: string };
+      if (prismaError.code === 'P2002') {
+        return NextResponse.json(
+          { error: 'A company with this email already exists' },
+          { status: 409 }
+        );
+      }
+    }
+    
+    return NextResponse.json({ error: 'Failed to create company. Please try again.' }, { status: 500 });
   }
 }

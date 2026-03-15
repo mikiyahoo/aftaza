@@ -1,0 +1,9 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/aftazaco/public_html/aftaza
+    - /bin/cp -R * $DEPLOYPATH
+    - cd $DEPLOYPATH
+    - rm -rf .next
+    - npm install
+    - npm run build

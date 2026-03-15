@@ -76,11 +76,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Convert propertyId to number if provided
+    let parsedPropertyId: number | null = null;
+    if (propertyId !== undefined && propertyId !== null) {
+      const num = Number(propertyId);
+      if (isNaN(num)) {
+        return NextResponse.json(
+          { error: 'Invalid propertyId format' },
+          { status: 400 }
+        );
+      }
+      parsedPropertyId = num;
+    }
+
     const inquiry = await prisma.propertyInquiry.create({
       data: {
-        propertyId: propertyId || null,
-        name,
-        email,
+        propertyId: parsedPropertyId,
+        name: name,
+        email: email,
         phone: phone || null,
         message: message || null,
       },

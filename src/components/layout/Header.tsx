@@ -263,7 +263,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed left-0 right-0 top-0 z-[100] px-3 pt-4 md:px-6 md:pt-6">
+      <header className={pathname.startsWith('/admin') ? "relative left-0 right-0 top-0 z-[100] px-3 pt-4 md:px-6 md:pt-6" : "fixed left-0 right-0 top-0 z-[100] px-3 pt-4 md:px-6 md:pt-6"}>
         <div className="container-x pointer-events-none">
           <div className="pointer-events-auto mx-auto max-w-[1280px]">
             <div className="relative w-full overflow-visible">

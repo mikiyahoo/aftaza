@@ -55,10 +55,32 @@ export async function PUT(
       return NextResponse.json({ error: 'Company not found' }, { status: 404 });
     }
 
+    // Check if name is being changed and if it conflicts with existing companies
+    if (name && name.trim() !== existingCompany.name) {
+      const conflictingCompany = await prisma.company.findFirst({
+        where: {
+          name: {
+            equals: name.trim(),
+            mode: 'insensitive'
+          },
+          id: {
+            not: id
+          }
+        }
+      });
+
+      if (conflictingCompany) {
+        return NextResponse.json(
+          { error: 'A company with this name already exists' },
+          { status: 409 }
+        );
+      }
+    }
+
     const company = await prisma.company.update({
       where: { id },
       data: {
-        ...(name && { name }),
+        ...(name && { name: name.trim() }),
         ...(phone !== undefined && { phone }),
         ...(email !== undefined && { email }),
       },
@@ -67,6 +89,18 @@ export async function PUT(
     return NextResponse.json(company);
   } catch (error) {
     console.error('Error updating company:', error);
+    
+    // Provide more specific error messages
+    if (error && typeof error === 'object' && 'code' in error) {
+      const prismaError = error as { code: string };
+      if (prismaError.code === 'P2002') {
+        return NextResponse.json(
+          { error: 'A company with this email already exists' },
+          { status: 409 }
+        );
+      }
+    }
+    
     return NextResponse.json({ error: 'Failed to update company' }, { status: 500 });
   }
 }
@@ -96,7 +130,7 @@ export async function DELETE(
 
     // Check if company has properties
     const propertyCount = await prisma.property.count({
-      where: { companyId: id },
+      where: { company_id: id },
     });
 
     if (propertyCount > 0) {

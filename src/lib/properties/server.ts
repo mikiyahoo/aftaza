@@ -57,7 +57,7 @@ export const getDatabaseProperties = cache(async (options?: {
       where.bedrooms = { gte: bedrooms };
     }
 
-    const properties = await prisma.property.findMany({
+    const properties = await prisma.properties.findMany({
       where,
       include: {
         images: {
@@ -73,7 +73,7 @@ export const getDatabaseProperties = cache(async (options?: {
           }
         }
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { created_at: 'desc' },
       take: limit,
       skip: offset,
     });
@@ -87,7 +87,7 @@ export const getDatabaseProperties = cache(async (options?: {
 
 export const getDatabasePropertyBySlug = cache(async (slug: string) => {
   try {
-    const property = await prisma.property.findUnique({
+    const property = await prisma.properties.findUnique({
       where: { slug },
       include: {
         images: {
@@ -160,7 +160,7 @@ export const getDatabaseFeaturedProperties = cache(async (options?: {
     };
     where.featured = true;
 
-    const properties = await prisma.property.findMany({
+    const properties = await prisma.properties.findMany({
       where,
       include: {
         images: {
@@ -176,7 +176,7 @@ export const getDatabaseFeaturedProperties = cache(async (options?: {
           }
         }
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { created_at: 'desc' },
       take: limit,
       skip: offset,
     });
@@ -202,7 +202,7 @@ export const getDatabaseCompanies = cache(async () => {
 });
 
 export const createDatabaseInquiry = async (data: {
-  propertyId?: string;
+  propertyId?: number;
   name: string;
   email: string;
   phone?: string;

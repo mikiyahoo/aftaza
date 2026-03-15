@@ -4,7 +4,7 @@ import { ArrowUpRight, Bath, BedDouble, MapPin, Square } from "lucide-react";
 import { formatArea, formatBirr } from "@/lib/properties/config";
 import { cn } from "@/lib/utils";
 import type { PropertyRecord } from "@/types/property";
-import PropertyImage from "./PropertyImage";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 interface PropertyCardProps {
   property: PropertyRecord;
@@ -56,10 +56,9 @@ function PropertyCardComponent({
   const listContent = expanded ? (
     <article className="flex flex-col">
       <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
-        <PropertyImage
+        <OptimizedImage
           src={property.heroImage || property.image}
           alt={property.title}
-          fallbackLabel={property.title}
           fill
           sizes="(max-width: 1280px) 100vw, 720px"
           className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
@@ -90,10 +89,9 @@ function PropertyCardComponent({
   ) : condensed ? (
     <article className="grid gap-0 sm:grid-cols-[180px_minmax(0,1fr)]">
       <div className="relative min-h-[180px] overflow-hidden bg-slate-950">
-        <PropertyImage
+        <OptimizedImage
           src={property.image}
           alt={property.title}
-          fallbackLabel={property.title}
           fill
           sizes="(max-width: 768px) 100vw, 180px"
           className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
@@ -129,10 +127,9 @@ function PropertyCardComponent({
   ) : (
     <article className="grid gap-0 lg:grid-cols-[260px_minmax(0,1fr)]">
       <div className="relative min-h-[260px] overflow-hidden bg-slate-950">
-        <PropertyImage
+        <OptimizedImage
           src={property.image}
           alt={property.title}
-          fallbackLabel={property.title}
           fill
           sizes="(max-width: 1024px) 100vw, 260px"
           className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
@@ -180,10 +177,9 @@ function PropertyCardComponent({
     ) : (
       <article className="flex h-full flex-col">
         <div className="relative aspect-[4/3] overflow-hidden">
-          <PropertyImage
+          <OptimizedImage
             src={variant === "mini" ? property.image : property.heroImage || property.image}
             alt={property.title}
-            fallbackLabel={property.title}
             fill
             priority={priority}
             sizes={
