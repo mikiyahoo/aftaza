@@ -5,9 +5,142 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
+// Fix for Supabase SSL issues - add to connection string: sslmode=no-verify
+
+// ============================================
+// Table 1 — Accounts (Admin Users)
+// ============================================
+model Account {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         String   @default("editor") // admin, editor
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  properties   properties[] @relation(name: "PropertyCreator")
+  propertiesLegacy Property[] @relation(name: "PropertyCreatorLegacy")
+
+  @@map("accounts")
+}
+
+// ============================================
+// Table 2 — Properties (Main Table)
+// ============================================
+model properties {
+  id            Int      @id @default(autoincrement()) @map("pkey")
+  title         String
+  slug          String?  @unique @map("slug_key")
+  price         Float?
+  location      String?
+  property_type String?
+  status        String?  @default("active")
+  bedrooms      Int?
+  bathrooms     Int?
+  parking       Int?
+  area          Float?
+  description   String?
+  featured      Boolean  @default(false)
+  company_id    String?
+  created_by    String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  // Relations
+  company       Company?           @relation(fields: [company_id], references: [id], name: "PropertyCompany")
+  creator       Account?           @relation(fields: [created_by], references: [id], name: "PropertyCreator")
+  images        PropertyImage[]    @relation(name: "PropertyImages")
+  inquiries     PropertyInquiry[]
+
+  // Indexes for performance optimization
+  @@index([status, featured, created_at])
+  @@index([property_type, location])
+  @@index([price])
+  @@index([bedrooms, bathrooms])
+  @@index([company_id])
+  @@index([created_by])
+  @@index([title])
+  @@index([location])
+  @@map("properties")
+}
+
+// ============================================
+// Table 3 — Property Images
+// ============================================
+model PropertyImage {
+  id         String   @id @default(cuid())
+  propertyId Int      @map("property_id")
+  imageUrl   String   @map("image_url")
+  isPrimary  Boolean  @default(false) @map("is_primary")
+  sortOrder  Int      @default(0) @map("sort_order")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  property   properties? @relation(fields: [propertyId], references: [id], name: "PropertyImages", map: "property_images_property_id_fkey", onDelete: Cascade)
+  propertyLegacy Property? @relation(fields: [propertyId], references: [id], name: "PropertyImagesLegacy", map: "property_images_property_id_fkey_legacy", onDelete: Cascade)
+
+  @@map("property_images")
+}
+
+// ============================================
+// Table 4 — Companies (Real Estate Companies)
+// ============================================
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  properties properties[] @relation(name: "PropertyCompany")
+  propertiesLegacy Property[] @relation(name: "PropertyCompanyLegacy")
+
+  @@map("companies")
+}
+
+// ============================================
+// Table 5 — Testimonials (Success Stories)
+// ============================================
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  title     String?
+  quote     String   @db.Text
+  image     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonials")
+}
+
+// ============================================
+// Table 6 — Property Inquiries (Leads)
+// ============================================
+model PropertyInquiry {
+  id         String   @id @default(cuid())
+  propertyId Int?     @map("property_id")
+  name       String
+  email      String
+  phone      String?
+  message    String?  @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  // Relations
+  property   properties? @relation(fields: [propertyId], references: [id], map: "property_inquiries_property_id_fkey")
+  propertyLegacy Property? @relation(fields: [propertyId], references: [id], map: "property_inquiries_property_id_fkey_legacy")
+
+  @@map("property_inquiries")
+}
+
+
+// ============================================
+// Legacy Models (kept for backward compatibility)
+// ============================================
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -30,4 +163,35 @@ model Post {
   updatedAt    DateTime @updatedAt
   authorId     String
   author       User     @relation(fields: [authorId], references: [id])
+}
+
+// ============================================
+// Table 2 — Properties (Main Table) - Legacy Model
+// ============================================
+model Property {
+  id            Int      @id @default(autoincrement()) @map("pkey_legacy")
+  title         String
+  slug          String?  @unique @map("slug_key_legacy")
+  price         Float?
+  location      String?
+  property_type String?
+  status        String?  @default("active")
+  bedrooms      Int?
+  bathrooms     Int?
+  parking       Int?
+  area          Float?
+  description   String?
+  featured      Boolean  @default(false)
+  company_id    String?
+  created_by    String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  // Relations
+  company       Company?           @relation(fields: [company_id], references: [id], name: "PropertyCompanyLegacy")
+  creator       Account?           @relation(fields: [created_by], references: [id], name: "PropertyCreatorLegacy")
+  images        PropertyImage[]    @relation(name: "PropertyImagesLegacy")
+  inquiries     PropertyInquiry[]
+
+  @@map("properties_legacy")
 }

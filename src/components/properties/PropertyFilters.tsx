@@ -16,7 +16,6 @@ interface PropertyFiltersProps {
   actionPath: string;
   initialFilters?: Partial<PropertyRouteFilters>;
   className?: string;
-  variant?: "inline" | "hero";
 }
 
 interface FilterOption {
@@ -30,7 +29,6 @@ interface PropertyFilterDropdownProps {
   value: string;
   options: FilterOption[];
   onChange: (value: string) => void;
-  showLabel?: boolean;
 }
 
 function PropertyFilterDropdown({
@@ -39,7 +37,6 @@ function PropertyFilterDropdown({
   value,
   options,
   onChange,
-  showLabel = false,
 }: PropertyFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -149,10 +146,9 @@ function PropertyFilterDropdown({
   return (
     <div
       ref={dropdownRef}
-      className={cn("property-filter-dropdown property-filter-field", showLabel && "property-filter-field-stacked")}
+      className="property-filter-dropdown property-filter-field"
       data-open={isOpen ? "true" : "false"}
     >
-      {showLabel ? <span className="property-filter-field-label">{label}</span> : null}
       <div className="property-filter-control">
         <button
           id={buttonId}
@@ -208,9 +204,7 @@ export default function PropertyFilters({
   actionPath,
   initialFilters,
   className,
-  variant = "inline",
 }: PropertyFiltersProps) {
-  const isHero = variant === "hero";
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [location, setLocation] = useState(initialFilters?.location ?? "");
@@ -252,28 +246,10 @@ export default function PropertyFilters({
   }, [actionPath, initialFilters, location, priceRange, router, type]);
 
   return (
-    <div
-      className={cn(
-        "property-filter-wrap property-floating-card w-full",
-        isHero ? "property-hero-filter-shell" : "property-listings-filter-shell p-3 md:p-4",
-        className
-      )}
-    >
-      <div
-        className={cn(
-          "property-filter-grid",
-          isHero
-            ? "property-filter-grid--hero flex flex-col gap-4"
-            : "property-filter-grid--inline grid gap-3 xl:grid-cols-[124px_repeat(3,minmax(0,1fr))_minmax(164px,178px)]"
-        )}
-      >
-        <div className={cn("flex", isHero ? "justify-start" : "items-center")}>
-          <div
-            className={cn(
-              "property-tab-active text-sm font-semibold tracking-[0.2em]",
-              isHero ? "w-fit min-w-[112px] px-5 py-2" : "h-[54px] w-full px-4"
-            )}
-          >
+    <div className={cn("property-filter-wrap property-floating-card w-full p-2 md:p-3", className)}>
+      <div className="property-filter-grid grid gap-2 xl:grid-cols-[124px_repeat(3,minmax(0,1fr))_minmax(152px,168px)]">
+        <div className="flex">
+          <div className="property-tab-active w-full px-4 py-4 text-sm font-semibold tracking-[0.2em]">
             BUY
           </div>
         </div>
@@ -284,7 +260,6 @@ export default function PropertyFilters({
           value={location}
           options={locationOptions}
           onChange={setLocation}
-          showLabel={isHero}
         />
 
         <PropertyFilterDropdown
@@ -295,7 +270,6 @@ export default function PropertyFilters({
           onChange={(nextValue) =>
             setType(nextValue as NonNullable<PropertyRouteFilters["type"]> | "")
           }
-          showLabel={isHero}
         />
 
         <PropertyFilterDropdown
@@ -304,21 +278,17 @@ export default function PropertyFilters({
           value={priceRange}
           options={priceOptions}
           onChange={setPriceRange}
-          showLabel={isHero}
         />
 
         <button
           type="button"
           onClick={handleSearch}
-          className={cn(
-            "property-filter-search inline-flex items-center justify-center disabled:pointer-events-none disabled:opacity-70",
-            isHero ? "w-full" : "h-[54px] self-center"
-          )}
+          className="property-filter-search inline-flex items-center justify-center disabled:pointer-events-none disabled:opacity-70"
           aria-label="Search properties"
           disabled={isPending}
         >
           <Search size={16} />
-          <span>{isPending ? "Loading" : isHero ? "Search Properties" : "Search"}</span>
+          <span>{isPending ? "Loading" : "Search"}</span>
         </button>
       </div>
     </div>

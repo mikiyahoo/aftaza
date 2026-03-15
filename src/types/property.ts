@@ -34,6 +34,9 @@ export interface PropertyRecord {
   status: "active" | "inactive";
   trustBadges: PropertyBadge[];
   createdAt: string;
+  // Company information
+  companyId?: string;
+  companyName?: string;
 }
 
 export interface PropertyFilters {
@@ -47,6 +50,7 @@ export interface PropertyFilters {
   bedroomsMode?: "exact" | "gte";
   view?: PropertyView | "";
   status?: "active" | "inactive";
+  featured?: boolean;
 }
 
 export interface PropertyRouteFilters extends PropertyFilters {

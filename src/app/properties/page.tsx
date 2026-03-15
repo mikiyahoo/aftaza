@@ -14,6 +14,7 @@ import PropertyImage from "@/components/properties/PropertyImage";
 import Badge from "@/components/ui/Badge";
 import { getPropertyInsightsFeed } from "@/lib/supabase/blogs";
 import { getFeaturedProperties } from "@/lib/supabase/properties";
+import { getDatabaseTestimonials } from "@/lib/properties/server";
 
 export const metadata: Metadata = {
   title: "Properties",
@@ -51,10 +52,13 @@ const steps = [
 ];
 
 export default async function PropertiesPage() {
-  const [featuredProperties, insightsFeed] = await Promise.all([
+  const [featuredProperties, insightsFeed, testimonials] = await Promise.all([
     getFeaturedProperties(6),
     getPropertyInsightsFeed(),
+    getDatabaseTestimonials(),
   ]);
+
+  const featuredTestimonial = testimonials.length > 0 ? testimonials[0] : null;
 
   return (
     <main className="property-shell min-h-screen">
@@ -116,7 +120,6 @@ export default async function PropertiesPage() {
             <div className="flex justify-center lg:justify-end">
               <PropertyFilters
                 actionPath="/properties/listings"
-                variant="hero"
                 className="property-hero-filter-shell relative z-50 w-full max-w-[460px] property-fade-up"
               />
             </div>
@@ -197,57 +200,113 @@ export default async function PropertiesPage() {
             </h2>
           </div>
 
-          <div className="group relative mx-auto max-w-6xl overflow-hidden border border-white/10 bg-brand-navy text-white shadow-2xl transition-all duration-500 hover:-translate-y-2">
-            <div
-              className="absolute inset-0 opacity-0 transition-opacity duration-700 pointer-events-none group-hover:opacity-100"
-              style={{
-                background:
-                  "radial-gradient(circle at top right, rgba(200,163,77,0.1) 0%, transparent 70%)",
-              }}
-            />
+          <div>
+            {featuredTestimonial ? (
+        <div className="group relative mx-auto max-w-6xl overflow-hidden border border-white/10 bg-brand-navy text-white shadow-2xl transition-all duration-500 hover:-translate-y-2">
+          <div
+            className="absolute inset-0 opacity-0 transition-opacity duration-700 pointer-events-none group-hover:opacity-100"
+            style={{
+              background:
+                "radial-gradient(circle at top right, rgba(200,163,77,0.1) 0%, transparent 70%)",
+            }}
+          />
 
-            <div className="relative z-10 grid gap-0 lg:grid-cols-[280px_1fr]">
-              <div className="flex flex-col items-center justify-center gap-6 border-b border-white/10 px-8 py-10 text-center lg:border-b-0 lg:border-r lg:px-10 lg:py-12">
-                <div className="relative h-36 w-36 overflow-hidden rounded-full border border-white/10 shadow-2xl">
-                  <PropertyImage
-                    src="/property/testimonial-client.jpg"
-                    alt="Testimonial client"
-                    fallbackLabel="Abebech T."
-                    fill
-                    sizes="144px"
-                    className="object-cover"
-                  />
-                </div>
-
-                <div>
-                  <p className="text-[10px] font-mono font-bold uppercase tracking-[0.24em] text-[#c8a34d]">
-                    Client Profile
-                  </p>
-                  <h3 className="mt-4 text-3xl font-display font-bold text-white">Abebech Tesfaye</h3>
-                  <p className="mt-2 text-sm font-medium uppercase tracking-[0.2em] text-slate-300">
-                    Homeowner
-                  </p>
-                </div>
+          <div className="relative z-10 grid gap-0 lg:grid-cols-[280px_1fr]">
+            <div className="flex flex-col items-center justify-center gap-6 border-b border-white/10 px-8 py-10 text-center lg:border-b-0 lg:border-r lg:px-10 lg:py-12">
+              <div className="relative h-36 w-36 overflow-hidden rounded-full border border-white/10 shadow-2xl">
+                <PropertyImage
+                  src={featuredTestimonial.image || "/property/testimonial-client.jpg"}
+                  alt={featuredTestimonial.name}
+                  fallbackLabel={featuredTestimonial.name}
+                  fill
+                  sizes="144px"
+                  className="object-cover"
+                />
               </div>
 
-              <div className="px-8 py-10 md:px-10 md:py-12">
+              <div>
                 <p className="text-[10px] font-mono font-bold uppercase tracking-[0.24em] text-[#c8a34d]">
-                  Testimonial Detail
+                  Client Profile
                 </p>
-                <p className="mt-6 max-w-3xl text-2xl font-display font-bold leading-tight text-white md:text-3xl">
-                  &ldquo;Aftaza made the entire process incredibly smooth – from viewing
-                  properties in Bole to closing the deal on my new home. The team
-                  understands the Addis market inside out.&rdquo;
-                </p>
-                <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
-                  A clear process, verified listings, and responsive coordination made the
-                  transaction easier to evaluate and complete with confidence.
+                <h3 className="mt-4 text-3xl font-display font-bold text-white">{featuredTestimonial.name}</h3>
+                <p className="mt-2 text-sm font-medium uppercase tracking-[0.2em] text-slate-300">
+                  {featuredTestimonial.title}
                 </p>
               </div>
             </div>
 
-            <div className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-[#c8a34d] transition-transform duration-500 group-hover:scale-x-100" />
-            <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c8a34d] transition-all duration-500 group-hover:w-full" />
+            <div className="px-8 py-10 md:px-10 md:py-12">
+              <p className="text-[10px] font-mono font-bold uppercase tracking-[0.24em] text-[#c8a34d]">
+                Testimonial Detail
+              </p>
+              <p className="mt-6 max-w-3xl text-2xl font-display font-bold leading-tight text-white md:text-3xl">
+                &ldquo;{featuredTestimonial.quote}&rdquo;
+              </p>
+              {featuredTestimonial.title && (
+                <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
+                  {featuredTestimonial.title}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-[#c8a34d] transition-transform duration-500 group-hover:scale-x-100" />
+          <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c8a34d] transition-all duration-500 group-hover:w-full" />
+        </div>
+      ) : (
+        <div className="group relative mx-auto max-w-6xl overflow-hidden border border-white/10 bg-brand-navy text-white shadow-2xl transition-all duration-500 hover:-translate-y-2">
+          <div
+            className="absolute inset-0 opacity-0 transition-opacity duration-700 pointer-events-none group-hover:opacity-100"
+            style={{
+              background:
+                "radial-gradient(circle at top right, rgba(200,163,77,0.1) 0%, transparent 70%)",
+            }}
+          />
+
+          <div className="relative z-10 grid gap-0 lg:grid-cols-[280px_1fr]">
+            <div className="flex flex-col items-center justify-center gap-6 border-b border-white/10 px-8 py-10 text-center lg:border-b-0 lg:border-r lg:px-10 lg:py-12">
+              <div className="relative h-36 w-36 overflow-hidden rounded-full border border-white/10 shadow-2xl">
+                <PropertyImage
+                  src="/property/testimonial-client.jpg"
+                  alt="Testimonial client"
+                  fallbackLabel="Abebech T."
+                  fill
+                  sizes="144px"
+                  className="object-cover"
+                />
+              </div>
+
+              <div>
+                <p className="text-[10px] font-mono font-bold uppercase tracking-[0.24em] text-[#c8a34d]">
+                  Client Profile
+                </p>
+                <h3 className="mt-4 text-3xl font-display font-bold text-white">Abebech Tesfaye</h3>
+                <p className="mt-2 text-sm font-medium uppercase tracking-[0.2em] text-slate-300">
+                  Homeowner
+                </p>
+              </div>
+            </div>
+
+            <div className="px-8 py-10 md:px-10 md:py-12">
+              <p className="text-[10px] font-mono font-bold uppercase tracking-[0.24em] text-[#c8a34d]">
+                Testimonial Detail
+              </p>
+              <p className="mt-6 max-w-3xl text-2xl font-display font-bold leading-tight text-white md:text-3xl">
+                &ldquo;Aftaza made the entire process incredibly smooth – from viewing
+                properties in Bole to closing the deal on my new home. The team
+                understands the Addis market inside out.&rdquo;
+              </p>
+              <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
+                A clear process, verified listings, and responsive coordination made the
+                transaction easier to evaluate and complete with confidence.
+              </p>
+            </div>
+          </div>
+
+          <div className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-[#c8a34d] transition-transform duration-500 group-hover:scale-x-100" />
+          <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c8a34d] transition-all duration-500 group-hover:w-full" />
+        </div>
+      )}
           </div>
         </div>
       </section>

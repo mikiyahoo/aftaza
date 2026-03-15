@@ -1,20 +1,122 @@
-# dependencies
+# ================================
+
+# Dependencies
+
+# ================================
+
 node_modules/
 
-# next build
+# ================================
+
+# Next.js build output
+
+# ================================
+
 .next/
 out/
+.next-dev.err.log
+.next-dev.out.log
 
-# logs
+# ================================
+
+# Production build artifacts
+
+# ================================
+
+build/
+dist/
+coverage/
+
+# ================================
+
+# Logs
+
+# ================================
+
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# environment
+# ================================
+
+# Environment variables
+
+# ================================
+
 .env
-.env.local
-.env.production
+.env.*
+!.env.example
 
-# misc
-.DS_Store
+# ================================
+
+# Prisma generated files
+
+# ================================
+
 /src/generated/prisma
+
+# ================================
+
+# TypeScript build cache
+
+# ================================
+
+*.tsbuildinfo
+
+# ================================
+
+# OS files
+
+# ================================
+
+.DS_Store
+Thumbs.db
+
+# ================================
+
+# IDE / Editor settings
+
+# ================================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ================================
+
+# Local scripts / testing
+
+# ================================
+
+test-*
+*.ps1
+
+# ================================
+
+# Local planning / docs
+
+# ================================
+
+plans/
+*.md
+
+# ================================
+
+# Temporary files
+
+# ================================
+
+tmp/
+temp/
+.cache/
+
+# ================================
+
+# Deployment logs
+
+# ================================
+
+deployment.log

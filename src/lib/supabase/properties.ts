@@ -3,6 +3,7 @@ import "server-only";
 import { propertySeed } from "@/data/propertySeed";
 import { mapRealEstateTypeToPropertyType } from "@/lib/properties/config";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getDatabaseProperties, getDatabasePropertyBySlug } from "@/lib/properties/server";
 import type { PropertyFilters, PropertyRecord, PropertyType } from "@/types/property";
 
 const PROPERTY_TABLE = "properties";
@@ -101,11 +102,46 @@ function normalizeProperty(row: Record<string, unknown>): PropertyRecord {
           .map((item) => String(item))
           .filter(Boolean) as PropertyRecord["viewTags"]
       : [],
-    status: row.status === "inactive" ? "inactive" : "active",
+     status: row.status === "For Sale" || row.status === "For Rent" ? "active" : "inactive",
     trustBadges: Array.isArray(row.trust_badges)
       ? row.trust_badges.map((item) => String(item)) as PropertyRecord["trustBadges"]
       : ["Verified Listing"],
     createdAt: String(row.created_at ?? row.createdAt ?? new Date().toISOString()),
+  };
+}
+
+// Normalize property from Prisma database
+function normalizeDbProperty(dbProperty: any): PropertyRecord {
+  const primaryImage = dbProperty.images?.find((img: any) => img.isPrimary) || dbProperty.images?.[0];
+  const gallery = dbProperty.images?.map((img: any) => img.imageUrl) || [];
+
+  return {
+    id: dbProperty.id,
+    slug: dbProperty.slug,
+    title: dbProperty.title,
+    location: dbProperty.location,
+    neighborhood: dbProperty.location.split(',')[0]?.trim() || 'Addis Ababa',
+    city: 'Addis Ababa',
+    type: dbProperty.propertyType as PropertyType,
+    category: 'Residential',
+    price: dbProperty.price,
+    bedrooms: dbProperty.bedrooms || 0,
+    bathrooms: dbProperty.bathrooms || 0,
+    parking: dbProperty.parking || 0,
+    areaSqm: dbProperty.area || 0,
+    areaSqft: dbProperty.area ? Math.round(dbProperty.area * 10.7639) : 0,
+    shortDescription: dbProperty.description?.substring(0, 150) || '',
+    description: dbProperty.description || '',
+    image: primaryImage?.imageUrl || '/property/property-1.jpg',
+    heroImage: primaryImage?.imageUrl || '/property/property-hero.jpg',
+    gallery: gallery.length > 0 ? gallery : ['/property/property-hero.jpg'],
+    viewTags: [],
+     status: dbProperty.status === 'For Sale' || dbProperty.status === 'For Rent' ? 'active' : 'inactive',
+    trustBadges: dbProperty.featured ? ['Featured'] : ['Verified Listing'],
+    createdAt: dbProperty.createdAt.toISOString(),
+    // Company information
+    companyId: dbProperty.companyId,
+    companyName: dbProperty.company?.name,
   };
 }
 
@@ -157,12 +193,15 @@ function matchesFilters(property: PropertyRecord, filters: PropertyFilters) {
   return true;
 }
 
-function filterSeedProperties(filters: PropertyFilters, limit?: number) {
+function filterSeedProperties(filters: PropertyFilters, limit?: number, offset: number = 0) {
   const filtered = sortByCreatedAtDesc(propertySeed).filter((property) => matchesFilters(property, filters));
-  return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
+  if (typeof limit === "number") {
+    return filtered.slice(offset, offset + limit);
+  }
+  return filtered.slice(offset);
 }
 
-async function querySupabaseProperties(filters: PropertyFilters, limit?: number) {
+async function querySupabaseProperties(filters: PropertyFilters, limit?: number, offset: number = 0) {
   const client = getSupabaseServerClient();
 
   if (!client) {
@@ -208,7 +247,9 @@ async function querySupabaseProperties(filters: PropertyFilters, limit?: number)
 
     query = query.order(orderColumn, { ascending: false });
 
-    if (typeof limit === "number") {
+    if (typeof offset === "number" && typeof limit === "number") {
+      query = query.range(offset, offset + limit - 1);
+    } else if (typeof limit === "number") {
       query = query.limit(limit);
     }
 
@@ -233,21 +274,68 @@ async function querySupabaseProperties(filters: PropertyFilters, limit?: number)
   }
 }
 
-export async function getProperties(filters: PropertyFilters = {}, limit = 24) {
-  const supabaseProperties = await querySupabaseProperties(filters, limit);
+export async function getProperties(filters: PropertyFilters = {}, limit = 24, offset = 0) {
+  // First try to fetch from Prisma database
+  try {
+    const dbProperties = await getDatabaseProperties({
+      status: filters.status,
+      featured: filters.featured,
+      limit,
+      offset,
+      location: filters.location,
+      propertyType: filters.type || mapRealEstateTypeToPropertyType(filters.realEstateType),
+      minPrice: filters.minPrice,
+      maxPrice: filters.maxPrice,
+      bedrooms: filters.bedrooms,
+    });
+
+    if (dbProperties && dbProperties.length > 0) {
+      return dbProperties.map(normalizeDbProperty);
+    }
+  } catch (error) {
+    console.log('Prisma fetch failed, trying Supabase...', error);
+  }
+
+  // Fallback to Supabase
+  const supabaseProperties = await querySupabaseProperties(filters, limit, offset);
 
   if (supabaseProperties) {
     return supabaseProperties;
   }
 
-  return filterSeedProperties(filters, limit);
+  return filterSeedProperties(filters, limit, offset);
 }
 
 export async function getFeaturedProperties(limit = 6) {
+  // First try Prisma
+  try {
+    const dbProperties = await getDatabaseProperties({
+      featured: true,
+      status: 'For Sale',
+      limit,
+    });
+
+    if (dbProperties && dbProperties.length > 0) {
+      return dbProperties.map(normalizeDbProperty);
+    }
+  } catch (error) {
+    console.log('Prisma featured fetch failed, trying Supabase...', error);
+  }
+
   return getProperties({ status: "active" }, limit);
 }
 
 export async function getPropertyBySlug(slug: string) {
+  // First try Prisma
+  try {
+    const dbProperty = await getDatabasePropertyBySlug(slug);
+    if (dbProperty) {
+      return normalizeDbProperty(dbProperty);
+    }
+  } catch (error) {
+    console.log('Prisma property fetch failed, trying Supabase...', error);
+  }
+
   const client = getSupabaseServerClient();
 
   if (client) {

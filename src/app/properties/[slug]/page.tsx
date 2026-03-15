@@ -1,17 +1,32 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { Bath, BedDouble, CarFront, MapPin, ShieldCheck, Square } from "lucide-react";
 import { notFound } from "next/navigation";
 import PropertyCard from "@/components/properties/PropertyCard";
 import PropertyImage from "@/components/properties/PropertyImage";
+import PropertyInquiryForm from "@/components/properties/PropertyInquiryForm";
 import { SITE } from "@/lib/constants";
 import { formatBirr } from "@/lib/properties/config";
 import { getPropertyBySlug, getRelatedProperties } from "@/lib/supabase/properties";
+import type { PropertyRecord } from "@/types/property";
 
 interface PropertyDetailPageProps {
   params: {
     slug: string;
   };
+}
+
+// Generate static params for all property slugs
+export async function generateStaticParams() {
+  try {
+    // We'll fetch all property slugs from the database
+    // For now, we'll return an empty array and rely on fallback or ISR
+    // In a production app, you would fetch all slugs here
+    return [];
+  } catch (error) {
+    console.error("Failed to generate static params:", error);
+    return [];
+  }
 }
 
 function getPhoneDigits(phone: string) {
@@ -44,7 +59,7 @@ export default async function PropertyDetailPage({
     notFound();
   }
 
-  const relatedProperties = await getRelatedProperties(property, 6);
+  const relatedProperties = await getRelatedProperties(property, 3);
   const bookTourUrl = `https://wa.me/${getPhoneDigits(SITE.phone)}?text=${encodeURIComponent(
     `Hello Aftaza Team, I want to book a tour for ${property.title} in ${property.location}. Please share the next available viewing slots.`
   )}`;
@@ -198,6 +213,18 @@ export default async function PropertyDetailPage({
           </aside>
         </div>
 
+        {/* Company Information */}
+        {property.companyName && (
+          <div className="property-floating-card p-6 md:p-8 mb-8">
+            <h3 className="text-xl font-display font-bold text-slate-900 mb-4">
+              Listed by
+            </h3>
+            <p className="text-base text-slate-600">
+              {property.companyName}
+            </p>
+          </div>
+        )}
+
         {/* Similar Properties - Separated into two sections */}
         {relatedProperties.length > 0 ? (
           <>
@@ -249,6 +276,16 @@ export default async function PropertyDetailPage({
             )}
           </>
         ) : null}
+
+        {/* Inquiry Form */}
+        <section className="mb-12">
+          <div className="property-floating-card p-6 md:p-8">
+            <PropertyInquiryForm 
+              propertyId={property.id} 
+              propertyTitle={property.title} 
+            />
+          </div>
+        </section>
       </div>
     </main>
   );
